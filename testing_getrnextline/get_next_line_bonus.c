@@ -6,7 +6,7 @@
 /*   By: grverdya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 16:35:26 by grverdya          #+#    #+#             */
-/*   Updated: 2024/02/01 18:21:20 by grverdya         ###   ########.fr       */
+/*   Updated: 2024/02/26 21:10:53 by grverdya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 char	*get_next_line(int fd)
 {
-	static char	*str[MAX_SIZE];
+	static char	*str[OPEN_MAX];
 	char		*next_line;
 
-	if (fd < 0 || BUFFER_SIZE < 1 || fd > MAX_SIZE - 1)
+	if (fd < 0 || BUFFER_SIZE < 1 || fd > OPEN_MAX - 1)
 		return (NULL);
 	str[fd] = get_read_line(fd, str[fd]);
 	if (!str[fd])
@@ -32,7 +32,7 @@ char	*get_read_line(int fd, char *str)
 	char	*temp;
 	int		read_len;
 
-	temp = (char *)malloc((BUFFER_SIZE + 1) + sizeof(char));
+	temp = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!temp)
 		return (NULL);
 	read_len = 1;
@@ -54,7 +54,7 @@ char	*get_read_line(int fd, char *str)
 char	*get_return_line(char *str)
 {
 	char	*line;
-	size_t	i;
+	int		i;
 
 	i = 0;
 	if (!str[i])
@@ -64,12 +64,9 @@ char	*get_return_line(char *str)
 	line = (char *)malloc((i + 2) * sizeof(char));
 	if (!line)
 		return (NULL);
-	i = 0;
-	while (str[i] && str[i] != '\n')
-	{
+	i = -1;
+	while (str[++i] && str[i] != '\n')
 		line[i] = str[i];
-		i++;
-	}
 	if (str[i] == '\n')
 	{
 		line[i] = str[i];

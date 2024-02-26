@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: grverdya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/31 16:34:56 by grverdya          #+#    #+#             */
-/*   Updated: 2024/02/01 18:13:52 by grverdya         ###   ########.fr       */
+/*   Created: 2024/02/23 19:02:57 by grverdya          #+#    #+#             */
+/*   Updated: 2024/02/26 21:10:18 by grverdya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char	*get_read_line(int fd, char *str)
 	char	*temp;
 	int		read_len;
 
-	temp = (char *)malloc((BUFFER_SIZE + 1) + sizeof(char));
+	temp = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!temp)
 		return (NULL);
 	read_len = 1;
@@ -54,7 +54,7 @@ char	*get_read_line(int fd, char *str)
 char	*get_return_line(char *str)
 {
 	char	*line;
-	size_t	i;
+	int		i;
 
 	i = 0;
 	if (!str[i])
@@ -64,12 +64,9 @@ char	*get_return_line(char *str)
 	line = (char *)malloc((i + 2) * sizeof(char));
 	if (!line)
 		return (NULL);
-	i = 0;
-	while (str[i] && str[i] != '\n')
-	{
+	i = -1;
+	while (str[++i] && str[i] != '\n')
 		line[i] = str[i];
-		i++;
-	}
 	if (str[i] == '\n')
 	{
 		line[i] = str[i];
@@ -94,6 +91,7 @@ char	*update_string(char *str)
 		return (NULL);
 	}
 	updated_str = (char *)malloc(sizeof(char) * (ft_strlen(str) - i + 1));
+	free(str);
 	if (!updated_str)
 		return (NULL);
 	i++;
@@ -101,6 +99,5 @@ char	*update_string(char *str)
 	while (str[i])
 		updated_str[j++] = str[i++];
 	updated_str[j] = '\0';
-	free(str);
 	return (updated_str);
 }

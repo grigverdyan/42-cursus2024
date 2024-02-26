@@ -6,7 +6,7 @@
 /*   By: grverdya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 16:34:49 by grverdya          #+#    #+#             */
-/*   Updated: 2024/02/01 18:19:42 by grverdya         ###   ########.fr       */
+/*   Updated: 2024/02/26 18:51:36 by grverdya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,10 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <fcntl.h>
+
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 42
+# endif
 
 char	*get_next_line(int fd);
 char	*get_read_line(int fd, char *str);

@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: grverdya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/31 16:35:08 by grverdya          #+#    #+#             */
-/*   Updated: 2024/02/01 18:23:43 by grverdya         ###   ########.fr       */
+/*   Created: 2024/01/31 16:35:37 by grverdya          #+#    #+#             */
+/*   Updated: 2024/02/25 16:05:28 by grverdya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 size_t	ft_strlen(const char *c)
 {
@@ -41,19 +41,19 @@ char	*ft_strchr(const char *s, int c)
 char	*ft_strjoin(char *s1, char *s2)
 {
 	char	*ptr;
-	size_t	i;
-	size_t	j;
+	int		i;
+	int		j;
 
 	if (!s1)
 	{
-		s1 = (char *)malloc(1 * sizeof(char));
+		s1 = (char *)malloc(sizeof(char));
 		s1[0] = '\0';
 	}
 	if (!s1 || !s2)
 		return (NULL);
 	i = -1;
 	j = -1;
-	ptr = (char *)malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(*s1));
+	ptr = (char *)malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
 	if (!ptr)
 		return (0);
 	while (s1 && s1[++i])
