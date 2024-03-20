@@ -1,5 +1,5 @@
 #include "push_swap.h"
-#include "check_args.h"
+#include "parse_arguments.h"
 #include "bubble_sort.h"
 #include "make_stack.h"
 #include "utils.h"
@@ -15,9 +15,11 @@ int	main(int argc, char **argv)
 	t_stack	stack_a;
 	t_stack	stack_b;
 
-	init_stack_b(&stack_b, &sorted);
-	nums_count = check_args(argc, argv);
-	unordered = get_nums(nums_count, argv);
+	init_stack_b(&stack_b);
+	sorted = NULL;
+	unordered = NULL;
+	nums_count = check_args(argc, argv, unordered);
+	// unordered = get_nums(nums_count, argv);
 	check_duplicates(unordered, nums_count);
 	if (!is_sorted(unordered, nums_count))
 		ft_free(unordered, sorted, "");

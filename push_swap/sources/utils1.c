@@ -1,14 +1,6 @@
 #include "utils.h"
 #include "sortings.h"
 
-void	init_stack_b(t_stack *st_b, int **sorted)
-{
-	st_b->head = NULL;
-	st_b->tail = NULL;
-	st_b->nodes = 0;
-	*sorted = NULL;
-}
-
 void	double_sort(int *unordered, int *sorted)
 {
 	ft_printf("sa\n");

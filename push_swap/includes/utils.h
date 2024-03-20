@@ -16,7 +16,6 @@
 # include "libft.h"
 # include "push_swap.h"
 
-void	init_stack_b(t_stack *st_b, int **sorted);
 void	error_message(char *sms);
 void	free_matrix(char **matrix, int size);
 int		get_matrix_size(char **matrix);

@@ -1,24 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_args.h                                       :+:      :+:    :+:   */
+/*   checker_bonus.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gverdyan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/23 19:23:01 by gverdyan          #+#    #+#             */
-/*   Updated: 2022/08/23 19:24:15 by gverdyan         ###   ########.fr       */
+/*   Created: 2022/08/23 19:26:39 by gverdyan          #+#    #+#             */
+/*   Updated: 2022/08/23 19:26:40 by gverdyan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CHECK_ARGS_H
-# define CHECK_ARGS_H
+#ifndef CHECKER_BONUS_H
+# define CHECKER_BONUS_H
 
-# include "libft.h"
+# include "push_swap_bonus.h"
 
-int		check_args(int argc, char **argv);
-int		get_nums_count(char **argv);
-void	check_num(char *num, char **temp, int *nums_count);
-void	check_num1(char *num, char **temp);
-void	check_duplicates(int *unordered, int size);
+void	checker(t_stack *st_a, t_stack *st_b);
+int		check_inst(char *inst);
+void	do_inst(char *inst, t_stack *st_a, t_stack *st_b);
+void	is_sorted_stack(t_stack *st_a, t_stack *st_b);
+void	sorted_exit(t_stack *st_a, t_stack *st_b, char *sms);
 
-#endif   /* CHECK_ARGS_H */
+#endif	/* CHECKER_BONUS_H */

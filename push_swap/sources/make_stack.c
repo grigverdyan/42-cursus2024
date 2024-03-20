@@ -2,6 +2,13 @@
 #include "utils.h"
 #include "bubble_sort.h"
 
+void	init_stack_b(t_stack *stack)
+{
+	stack->head = NULL;
+	stack->tail = NULL;
+	stack->nodes = 0;
+}
+
 void	make_stack_a(t_stack *stack, int *unordered, int *sorted, int size)
 {
 	int	i;
