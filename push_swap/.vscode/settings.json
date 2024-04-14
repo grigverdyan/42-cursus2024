@@ -1,0 +1,32 @@
+{
+    "files.associations": {
+        "utils.h": "c",
+        "bubble_sort.h": "c",
+        "cleanup.h": "c",
+        "validation.h": "c",
+        "push_swap.h": "c",
+        "stack_actions.h": "c",
+        "__hash_table": "c",
+        "__split_buffer": "c",
+        "__tree": "c",
+        "array": "c",
+        "bitset": "c",
+        "deque": "c",
+        "initializer_list": "c",
+        "iterator": "c",
+        "random": "c",
+        "set": "c",
+        "string": "c",
+        "string_view": "c",
+        "unordered_map": "c",
+        "unordered_set": "c",
+        "utility": "c",
+        "vector": "c",
+        "utils_bonus.h": "c",
+        "make_stack_bonus.h": "c",
+        "validation_bonus.h": "c",
+        "checker_bonus.h": "c",
+        "cleanup_bonus.h": "c",
+        "ostream": "c"
+    }
+}

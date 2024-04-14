@@ -3,81 +3,55 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putnbr_base.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gverdyan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: grverdya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/23 19:30:49 by gverdyan          #+#    #+#             */
-/*   Updated: 2022/08/23 19:30:51 by gverdyan         ###   ########.fr       */
+/*   Created: 2024/04/14 19:34:36 by grverdya          #+#    #+#             */
+/*   Updated: 2024/04/14 19:34:38 by grverdya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/ft_putnbr_base.h"
+#include "ft_printf.h"
+#include "ft_string.h"
 
-static size_t	ft_putchar(const char c)
-{
-	write (1, &c, 1);
-	return (1);
-}
-
-static size_t	ft_putstr(const char *str)
-{
-	size_t	i;
-
-	i = 0;
-	if (!str)
-		return (ft_putstr("(null)"));
-	while (str[i])
-	{
-		write (1, &str[i], 1);
-		++i;
-	}
-	return (i);
-}
-
-size_t	ft_putnbr_base(ssize_t nbr, char *base, size_t len, char spf)
+size_t	config_specifier(ssize_t num, char *base, char sp)
 {
 	size_t	count;
 
 	count = 0;
-	if (spf == 'd' || spf == 'i' || spf == 'u')
+	if (num < 0 && (sp == 'i' || sp == 'd' || sp == 'u'))
 	{
-		if (nbr < 0)
-		{
-			count += ft_putchar('-');
-			nbr = -nbr;
-		}
-		print_base(nbr, base, len, &count);
+		count += putchar_42('-');
+		num *= -1;
 	}
-	else if (spf == 'x' || spf == 'X')
-		print_base(nbr, base, len, &count);
-	else if (spf == 'p')
+	else if (num == 0 && sp == 'p')
 	{
-		if (nbr == 0)
-			count += ft_putstr("0x0");
-		else
-		{
-			count += ft_putstr("0x");
-			print_base(nbr, base, len, &count);
-		}
+		count += putstr_42("0x0");
+		return (count);
 	}
-	return (count);
+	else if (sp == 'p')
+		count += putstr_42("0x");
+	return (count + ft_putnbr_base(num, base));
 }
 
-void	print_base(ssize_t num, char *base, size_t len, size_t *count)
+size_t	ft_putnbr_base(ssize_t num, char *base)
 {
-	char		str[20];
-	size_t		rem;
-	size_t		i;
+	size_t	base_len;
+	size_t	i;
+	size_t	count;
+	char	rev_str[42];
 
-	i = 0;
+	base_len = strlen_42(base);
+	count = 0;
 	if (num == 0)
-		*count += ft_putchar(base[0]);
+		count += putchar_42(base[0]);
+	i = 0;
 	while (num != 0)
 	{
-		rem = num % len;
-		str[i] = base[rem];
+		rev_str[i] = base[num % base_len];
+		num /= base_len;
 		++i;
-		num = num / len;
 	}
-	while (i-- > 0)
-		*count += ft_putchar(str[i]);
+	while (i-- != 0)
+		count += putchar_42(rev_str[i]);
+	return (count);
 }

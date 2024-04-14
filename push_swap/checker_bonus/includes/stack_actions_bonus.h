@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   stack_actions_bonus.h                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gverdyan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: grverdya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/23 19:26:31 by gverdyan          #+#    #+#             */
-/*   Updated: 2022/08/23 19:26:32 by gverdyan         ###   ########.fr       */
+/*   Created: 2024/04/14 18:38:29 by grverdya          #+#    #+#             */
+/*   Updated: 2024/04/14 18:38:32 by grverdya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STACK_ACTIONS_BONUS_H
 # define STACK_ACTIONS_BONUS_H
 
-# include "push_swap_bonus.h"
+# include "checker_bonus.h"
 
 void	swap_stack(t_stack *stack);
 void	rotate_stack(t_stack *stack);

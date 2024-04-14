@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   butterfly.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: grverdya <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/20 20:56:19 by grverdya          #+#    #+#             */
+/*   Updated: 2024/03/20 20:56:21 by grverdya         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "butterfly.h"
 #include "stack_actions.h"
 #include "sortings.h"
@@ -64,33 +76,5 @@ void	sort_stack(t_stack *st_a, t_stack *st_b)
 		lst = st_b->head;
 		find_max_and_push_a(lst, st_b, st_b->nodes);
 		push_stack(st_b, st_a, "pa");
-	}
-}
-
-void	find_max_and_push_a(t_lst *lst, t_stack *stack_b, int size)
-{
-	int	i;
-	int	is_tail;
-
-	i = 0;
-	is_tail = 0;
-	while (is_tail == 0)
-	{
-		if (lst->index == size - 1)
-		{
-			if (i > size - i - 1)
-			{
-				while (i++ != size)
-					reverse_rotate_stack(stack_b, "rrb");
-			}
-			else
-				while (i-- > 0)
-					rotate_stack(stack_b, "rb");
-			break ;
-		}
-		++i;
-		lst = lst->next;
-		if (lst == stack_b->head)
-			is_tail = 1;
 	}
 }

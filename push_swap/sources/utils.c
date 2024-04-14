@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: grverdya <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/20 20:56:36 by grverdya          #+#    #+#             */
+/*   Updated: 2024/03/20 20:56:37 by grverdya         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "utils.h"
 
 void	error_message(char *sms)
@@ -6,38 +18,12 @@ void	error_message(char *sms)
 	exit(EXIT_FAILURE);
 }
 
-void	free_matrix(char **matrix, int size)
-{
-	size = size - 1;
-	while (size >= 0)
-	{
-		free(matrix[size]);
-		--size;
-	}
-	free(matrix);
-}
-
 int	get_matrix_size(char **matrix)
 {
 	int	i;
 
-	i = -1;
-	while (matrix[++i])
-		;
+	i = 0;
+	while (matrix[i])
+		++i;
 	return (i + 1);
-}
-
-void	free_and_exit(char **matrix, int size, char *sms)
-{
-	free_matrix(matrix, size);
-	error_message(sms);
-}
-
-void	ft_free(int *unordered, int *sorted, char *sms)
-{
-	if (unordered != NULL)
-		free(unordered);
-	if (sorted != NULL)
-		free(sorted);
-	error_message(sms);
 }

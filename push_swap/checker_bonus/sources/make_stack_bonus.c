@@ -3,43 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   make_stack_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gverdyan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: grverdya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/23 19:27:27 by gverdyan          #+#    #+#             */
-/*   Updated: 2022/08/23 19:27:28 by gverdyan         ###   ########.fr       */
+/*   Created: 2024/04/14 18:51:09 by grverdya          #+#    #+#             */
+/*   Updated: 2024/04/14 18:51:15 by grverdya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "make_stack_bonus.h"
+#include "cleanup_bonus.h"
 #include "utils_bonus.h"
 
-int	*get_nums(int nums_count, char **argv)
+void	init_stacks(t_stack *st_a, t_stack *st_b)
 {
-	int		*nums;
-	char	**temp;
-	int		indx[3];
-
-	indx[0] = 0;
-	indx[2] = -1;
-	nums = (int *)malloc(sizeof(int) * nums_count);
-	if (!nums)
-		error_message("[MALLOC ERROR]: Dynamic memory allocation fault!\n");
-	while (argv[++indx[0]])
-	{
-		temp = ft_split(argv[indx[0]], ' ');
-		if (!temp)
-			error_message("[MALLOC ERROR]: Dynamic memory alloc fault!\n");
-		else if (temp[0] == NULL)
-			free_matrix(temp, 1);
-		else
-		{
-			indx[1] = -1;
-			while (temp[++indx[1]])
-				nums[++indx[2]] = ft_atoi(temp[indx[1]]);
-			free_matrix(temp, get_matrix_size(temp));
-		}
-	}
-	return (nums);
+	st_a->head = NULL;
+	st_a->tail = NULL;
+	st_a->nodes = 0;
+	st_b->head = NULL;
+	st_b->tail = NULL;
+	st_b->nodes = 0;
 }
 
 void	make_stack_a(t_stack *stack, int *unordered, int size)

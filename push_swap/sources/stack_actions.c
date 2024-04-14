@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   stack_actions.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: grverdya <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/20 20:56:33 by grverdya          #+#    #+#             */
+/*   Updated: 2024/03/20 20:56:59 by grverdya         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "stack_actions.h"
 #include "utils.h"
 
@@ -36,7 +48,7 @@ void	push_stack(t_stack *from, t_stack *to, char *action)
 
 	new_lst = malloc(sizeof(t_lst));
 	if (!new_lst)
-		error_message("[MALLOC ERROR]: dynamic memory allocation error!");
+		error_message("Error\n");
 	++to->nodes;
 	new_lst->value = from->head->value;
 	new_lst->index = from->head->index;
@@ -61,7 +73,7 @@ void	push_stack(t_stack *from, t_stack *to, char *action)
 void	push_stack_2(t_stack *from, char *action)
 {
 	if (from->nodes == 1)
-	{	
+	{
 		free(from->head);
 		from->head = NULL;
 		from->tail = NULL;

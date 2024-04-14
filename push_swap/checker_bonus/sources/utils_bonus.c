@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   utils_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gverdyan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: grverdya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/23 19:30:27 by gverdyan          #+#    #+#             */
-/*   Updated: 2022/08/23 19:30:28 by gverdyan         ###   ########.fr       */
+/*   Created: 2024/04/14 19:06:02 by grverdya          #+#    #+#             */
+/*   Updated: 2024/04/14 19:06:19 by grverdya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "cleanup_bonus.h"
 #include "utils_bonus.h"
 
 void	error_message(char *sms)
@@ -18,38 +19,56 @@ void	error_message(char *sms)
 	exit(EXIT_FAILURE);
 }
 
-void	free_matrix(char **matrix, int size)
-{
-	size = size - 1;
-	while (size >= 0)
-	{
-		free(matrix[size]);
-		--size;
-	}
-	free(matrix);
-}
-
 int	get_matrix_size(char **matrix)
 {
 	int	i;
 
-	i = -1;
-	while (matrix[++i])
-		;
+	i = 0;
+	while (matrix[i])
+		++i;
 	return (i + 1);
 }
 
-void	free_and_exit(char **matrix, int size, char *sms)
+int	is_sorted(int *unordered, int size)
 {
-	free_matrix(matrix, size);
-	error_message(sms);
+	int	i;
+
+	i = 0;
+	if (size < 2)
+		ft_free(unordered, NULL, NULL);
+	while (++i < size)
+	{
+		if (unordered[i] <= unordered[i - 1])
+			return (1);
+	}
+	return (0);
 }
 
-void	ft_free(int *unordered, int *sorted, char *sms)
+int	*get_nums(int nums_count, char **argv)
 {
-	if (unordered != NULL)
-		free(unordered);
-	if (sorted != NULL)
-		free(sorted);
-	error_message(sms);
+	int		*nums;
+	char	**temp;
+	int		indx[3];
+
+	indx[0] = 0;
+	indx[2] = -1;
+	nums = (int *)malloc(sizeof(int) * nums_count);
+	if (!nums)
+		error_message("[MALLOC ERROR]: Dynamic memory allocation fault!\n");
+	while (argv[++indx[0]])
+	{
+		temp = ft_split(argv[indx[0]], ' ');
+		if (!temp)
+			error_message("[MALLOC ERROR]: Dynamic memory alloc fault!\n");
+		else if (temp[0] == NULL)
+			free_matrix(temp, 1);
+		else
+		{
+			indx[1] = -1;
+			while (temp[++indx[1]])
+				nums[++indx[2]] = ft_atoi(temp[indx[1]]);
+			free_matrix(temp, get_matrix_size(temp));
+		}
+	}
+	return (nums);
 }

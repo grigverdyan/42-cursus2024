@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gverdyan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: grverdya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/23 19:27:29 by gverdyan          #+#    #+#             */
-/*   Updated: 2022/08/23 19:27:30 by gverdyan         ###   ########.fr       */
+/*   Created: 2024/04/14 18:50:47 by grverdya          #+#    #+#             */
+/*   Updated: 2024/04/14 18:50:48 by grverdya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap_bonus.h"
-#include "check_args_bonus.h"
+#include "validation_bonus.h"
 #include "make_stack_bonus.h"
 #include "utils_bonus.h"
 #include "stack_actions_bonus.h"
@@ -24,8 +23,8 @@ int	main(int argc, char **argv)
 	t_stack	stack_a;
 	t_stack	stack_b;
 
-	init_stacks(&stack_a, &stack_b);
 	nums_count = check_args(argc, argv);
+	init_stacks(&stack_a, &stack_b);
 	unordered = get_nums(nums_count, argv);
 	check_duplicates(unordered, nums_count);
 	make_stack_a(&stack_a, unordered, nums_count);

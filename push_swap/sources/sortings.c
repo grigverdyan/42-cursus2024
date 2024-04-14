@@ -1,6 +1,25 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sortings.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: grverdya <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/20 20:56:31 by grverdya          #+#    #+#             */
+/*   Updated: 2024/03/20 20:56:32 by grverdya         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "sortings.h"
-#include "utils.h"
+#include "cleanup.h"
 #include "stack_actions.h"
+#include "butterfly.h"
+
+void	double_sort(int *unordered, int *sorted)
+{
+	ft_printf("sa\n");
+	ft_free(unordered, sorted, "");
+}
 
 void	forbbiden_sorting(int size, t_stack *stack_a, t_stack *stack_b)
 {
@@ -66,32 +85,4 @@ void	fiveple_sort(t_stack *stack_a, t_stack *stack_b, int size)
 	rotate_stack(stack_a, "ra");
 	push_stack(stack_b, stack_a, "pa");
 	rotate_stack(stack_a, "ra");
-}
-
-void	find_max_and_push_b(t_lst *lst, t_stack *stack_a, int size)
-{
-	int	i;
-	int	is_tail;
-
-	i = 0;
-	is_tail = 0;
-	while (is_tail == 0)
-	{
-		if (lst->index == size - 1)
-		{
-			if (i > size - i - 1)
-			{
-				while (i++ != size)
-					reverse_rotate_stack(stack_a, "rra");
-			}
-			else
-				while (i-- > 0)
-					rotate_stack(stack_a, "ra");
-			break ;
-		}
-		++i;
-		lst = lst->next;
-		if (lst == stack_a->head)
-			is_tail = 1;
-	}
 }

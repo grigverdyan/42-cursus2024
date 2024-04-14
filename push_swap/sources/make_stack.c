@@ -1,12 +1,26 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   make_stack.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: grverdya <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/20 20:56:29 by grverdya          #+#    #+#             */
+/*   Updated: 2024/03/20 20:56:30 by grverdya         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "make_stack.h"
 #include "utils.h"
 #include "bubble_sort.h"
+#include "cleanup.h"
 
-void	init_stack_b(t_stack *stack)
+void	init_stack_b(t_stack *st_b, int **sorted)
 {
-	stack->head = NULL;
-	stack->tail = NULL;
-	stack->nodes = 0;
+	st_b->head = NULL;
+	st_b->tail = NULL;
+	st_b->nodes = 0;
+	*sorted = NULL;
 }
 
 void	make_stack_a(t_stack *stack, int *unordered, int *sorted, int size)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   stack_actions_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gverdyan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: grverdya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/23 19:27:23 by gverdyan          #+#    #+#             */
-/*   Updated: 2022/08/23 19:27:24 by gverdyan         ###   ########.fr       */
+/*   Created: 2024/04/14 18:51:43 by grverdya          #+#    #+#             */
+/*   Updated: 2024/04/14 19:05:33 by grverdya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	push_stack(t_stack *from, t_stack *to)
 void	push_stack_2(t_stack *from)
 {
 	if (from->nodes == 1)
-	{	
+	{
 		free(from->head);
 		from->head = NULL;
 		from->tail = NULL;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.h                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gverdyan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: grverdya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/23 19:26:37 by gverdyan          #+#    #+#             */
-/*   Updated: 2022/08/23 19:26:38 by gverdyan         ###   ########.fr       */
+/*   Created: 2024/04/14 18:38:01 by grverdya          #+#    #+#             */
+/*   Updated: 2024/04/14 18:38:03 by grverdya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,13 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <fcntl.h>
-# define BUFFER_SIZE 69
+# include <limits.h>
+
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 42
+# endif
 
 char	*get_next_line(int fd);
-char	*file_read(int fd, char *str);
-char	*ret_line(char *str);
-char	*ft_gnl_strchr(const char *s, int c);
-char	*ft_gnl_strjoin(char *s1, char *s2);
-char	*updated_str(char *str);
-size_t	ft_gnl_strlen(const char *c);
+char	*get_buffer(int fd, char *str);
 
-#endif /* GNL_H */
+#endif

@@ -1,25 +1,27 @@
-.PHONY: all re clean fclean
+NAME = libftprintf.a
+CC = cc
+INCLUDES = -Iinclude
+CFLAGS = -Wall -Wextra -Werror
+SRCS = $(wildcard src/*.c)
+OBJS = $(patsubst %.c, %.o, $(SRCS))
+AR = ar rcs
+RM = rm -f
+CP = cp
 
-FOLDER	= src
-SOURCES	= $(wildcard $(FOLDER)/*.c)
-OBJECTS	= $(SOURCES:.c=.o)
-CC		= gcc
-CFLAGS	= -Wall -Wextra -Werror
-NAME	= libftprintf.a
-RM		= rm -f
+all: $(NAME)
 
-all : $(NAME)
+$(NAME): $(OBJS)
+	$(AR) $(NAME) $(OBJS)
 
-$(NAME) : $(OBJECTS)
-	@ar rcs $(NAME) $(OBJECTS)
+%.o: %.c
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@ 
 
-%.o : %.c
-	@$(CC) $(CFLAGS) -c $< -o $@
+clean:
+	$(RM) $(OBJS)
 
-re : fclean all
+fclean: clean
+	$(RM) $(NAME)
 
-clean :
-	@$(RM) $(OBJECTS)
+re: fclean all
 
-fclean : clean
-	@$(RM) $(NAME)
+.PHONY: all clean fclean re

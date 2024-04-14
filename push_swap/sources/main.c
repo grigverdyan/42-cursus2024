@@ -1,11 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: grverdya <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/20 20:56:26 by grverdya          #+#    #+#             */
+/*   Updated: 2024/04/14 19:51:42 by grverdya         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
-#include "parse_arguments.h"
-#include "bubble_sort.h"
+#include "validation.h"
 #include "make_stack.h"
-#include "utils.h"
-#include "stack_actions.h"
 #include "sortings.h"
 #include "butterfly.h"
+#include "cleanup.h"
 
 int	main(int argc, char **argv)
 {
@@ -15,14 +25,12 @@ int	main(int argc, char **argv)
 	t_stack	stack_a;
 	t_stack	stack_b;
 
-	init_stack_b(&stack_b);
-	sorted = NULL;
-	unordered = NULL;
-	nums_count = check_args(argc, argv, unordered);
-	// unordered = get_nums(nums_count, argv);
+	init_stack_b(&stack_b, &sorted);
+	nums_count = check_args(argc, argv);
+	unordered = get_nums(nums_count, argv);
 	check_duplicates(unordered, nums_count);
 	if (!is_sorted(unordered, nums_count))
-		ft_free(unordered, sorted, "");
+		ft_free(unordered, sorted, NULL);
 	sorted = copy_into_sorted(unordered, nums_count);
 	if (nums_count == 2)
 		double_sort(unordered, sorted);

@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   checker_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gverdyan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: grverdya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/23 19:27:36 by gverdyan          #+#    #+#             */
-/*   Updated: 2022/08/23 19:27:37 by gverdyan         ###   ########.fr       */
+/*   Created: 2024/04/14 18:42:21 by grverdya          #+#    #+#             */
+/*   Updated: 2024/04/14 18:49:04 by grverdya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "checker_bonus.h"
+#include "cleanup_bonus.h"
 #include "get_next_line_bonus.h"
 #include "utils_bonus.h"
 #include "stack_actions_bonus.h"
@@ -25,7 +26,7 @@ void	checker(t_stack *st_a, t_stack *st_b)
 		if (check_inst(inst) == 1)
 		{
 			free_stacks(st_a, st_b);
-			error_message("[INSTRUCTION ERROR]\n");
+			error_message("Error\n");
 		}
 		do_inst(inst, st_a, st_b);
 		if (inst != NULL)
@@ -37,27 +38,17 @@ void	checker(t_stack *st_a, t_stack *st_b)
 
 int	check_inst(char *inst)
 {
-	if (ft_strncmp(inst, "sa\n", 3) == 0)
-		return (0);
-	if (ft_strncmp(inst, "sb\n", 3) == 0)
-		return (0);
-	if (ft_strncmp(inst, "ss\n", 3) == 0)
-		return (0);
-	if (ft_strncmp(inst, "pa\n", 3) == 0)
-		return (0);
-	if (ft_strncmp(inst, "pb\n", 3) == 0)
-		return (0);
-	if (ft_strncmp(inst, "ra\n", 3) == 0)
-		return (0);
-	if (ft_strncmp(inst, "rb\n", 3) == 0)
-		return (0);
-	if (ft_strncmp(inst, "rr\n", 3) == 0)
-		return (0);
-	if (ft_strncmp(inst, "rra\n", 4) == 0)
-		return (0);
-	if (ft_strncmp(inst, "rrb\n", 4) == 0)
-		return (0);
-	if (ft_strncmp(inst, "rrr\n", 4) == 0)
+	if (ft_strncmp(inst, "sa\n", 3) == 0
+		|| ft_strncmp(inst, "sb\n", 3) == 0
+		|| ft_strncmp(inst, "ss\n", 3) == 0
+		|| ft_strncmp(inst, "pa\n", 3) == 0
+		|| ft_strncmp(inst, "pb\n", 3) == 0
+		|| ft_strncmp(inst, "ra\n", 3) == 0
+		|| ft_strncmp(inst, "rb\n", 3) == 0
+		|| ft_strncmp(inst, "rr\n", 3) == 0
+		|| ft_strncmp(inst, "rra\n", 4) == 0
+		|| ft_strncmp(inst, "rrb\n", 4) == 0
+		|| ft_strncmp(inst, "rrr\n", 4) == 0)
 		return (0);
 	return (1);
 }
