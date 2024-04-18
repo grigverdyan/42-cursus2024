@@ -6,7 +6,7 @@
 /*   By: grverdya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 19:57:34 by grverdya          #+#    #+#             */
-/*   Updated: 2024/04/17 21:17:50 by grverdya         ###   ########.fr       */
+/*   Updated: 2024/04/18 22:32:50 by grverdya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 /* Fractals */
 enum e_Fractal
 {
+	None,
 	Mandelbrot,
 	Julia
 };
@@ -50,8 +51,8 @@ typedef struct s_complex
 
 typedef struct s_fractal
 {
-	e_Fractal	type;
-	u_int32_t	color;
+	enum e_Fractal	type;
+	unsigned int		color;
 	double		zoom;
 	double		mouse_x;
 	double		mouse_y;
