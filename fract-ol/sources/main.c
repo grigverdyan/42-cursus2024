@@ -20,6 +20,14 @@ void	start_engine(t_engine* engine, char* str)
 	engine->window = mlx_new_window(engine->mlx, WIN_SIZE, WIN_SIZE, "Fract-ol");
 }
 
+int	main(int argc, char** argv)
+{
+	t_engine	engine;
+
+	start_engine(&engine, argv[1]);
+
+	return (0);
+}
 void	set_default_parameters(t_engine* engine, e_Fractal type)
 {
 	engine->fractal.type = type;
@@ -32,11 +40,3 @@ void	set_default_parameters(t_engine* engine, e_Fractal type)
 	engine->fractal.iterations = MIN_ITERATIONS;
 }
 
-int	main(int argc, char* argv[])
-{
-	t_engine	engine;
-
-	start_engine(&engine, argv[1]);
-
-	return (0);
-}

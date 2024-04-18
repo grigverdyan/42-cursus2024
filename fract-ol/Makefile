@@ -14,18 +14,21 @@ LIBFT_DIR		= libft/
 LIBFT_A			= libft.a
 LIBFT			= $(addprefix $(LIBFT_DIR), $(LIBFT_A))
 
-HEADERS			= -Iheaders -I$(LIBFT_DIR)
+HEADERS_DIR		= headers
+HEADERS_FLAG	= -I$(HEADERS_DIR) -I$(LIBFT_DIR)
+HEADERS			= $(wildcard $(HEADERS_DIR)/*.h) $(LIBFT_DIR)/libft.h
 
 SOURCES_DIR		= sources/
-SOURCES			= $(wildcard $(SOURCES_DIR)/*.c)
+SOURCE_FILES	= main.c
 
-OBJS_DIR		= objs
-OBJS_FILES		= $(SOURCES:.c=.o)
+SOURCES			= $(addprefix $(SOURCES_DIR), $(SOURCE_FILES))
+
+OBJS_DIR		= objs/
+OBJ_FILES		= $(SOURCE_FILES:.c=.o)
 OBJS			= $(addprefix $(OBJS_DIR), $(OBJ_FILES))
 
 LINKER			= -lft -L $(LIBFT_DIR)
 
-MLX_A			= libmlx.a
 
 ifeq ($(OS), Linux)
 		MLX_DIR		= mlx_linux/
@@ -35,8 +38,9 @@ else
 		LINKER		+= -lmlx -lm -framework OpenGl -framework Appkit -L $(MLX_DIR)
 endif
 
-HEADERS		+= -I$(MLX_DIR)
-MLX			= $(addprefix $(MLX_DIR), $(MLX_A))
+HEADERS_FLAG			+= -I$(MLX_DIR)
+MLX_A			= libmlx.a
+MLX				= $(addprefix $(MLX_DIR), $(MLX_A))
 
 
 # Colors
@@ -68,7 +72,7 @@ $(TARGET) : $(OBJS) Makefile
 	@$(CC) $(CFLAGS) $(OBJS) $(LINKER) -o $(TARGET)
 
 $(OBJS_DIR)%.o : $(SOURCES_DIR)%.c $(HEADERS)
-	@$(CC) $(CFLAGS) $(HEADERS) -c $< -o $@
+	@$(CC) $(CFLAGS) $(HEADERS_FLAG) -c $< -o $@
 
 clean :
 	@$(RM) $(OBJS_DIR)
