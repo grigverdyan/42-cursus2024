@@ -1,30 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_tolowercase.c                                   :+:      :+:    :+:   */
+/*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: grverdya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/18 20:05:34 by grverdya          #+#    #+#             */
-/*   Updated: 2024/04/18 21:33:51 by grverdya         ###   ########.fr       */
+/*   Created: 2024/04/20 20:32:44 by grverdya          #+#    #+#             */
+/*   Updated: 2024/04/20 20:35:58 by grverdya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef UTILS_H
+# define UTILS_H
+ 
+void	print(const char* str);
+void	throw_error(const char* message);
+void	help(void);
 
-char*	ft_tolowercase(const char* str)
-{
-	int		i;
-	char	lower[ft_strlen(str) + 1];
-	
-	if (!str)
-		return (NULL);
-	i = 0;
-	while (str[i])
-	{
-		lower[i] = ft_tolower(str[i]);
-		i++;
-	}
-	lower[i] = '\0';
-	return (lower);
-}
+#endif /* UTILS_H  */

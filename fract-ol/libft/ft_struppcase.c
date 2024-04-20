@@ -6,25 +6,24 @@
 /*   By: grverdya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 21:08:42 by grverdya          #+#    #+#             */
-/*   Updated: 2024/04/18 21:33:40 by grverdya         ###   ########.fr       */
+/*   Updated: 2024/04/20 18:19:27 by grverdya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char*	ft_touppercase(const char* str)
+char	*ft_strlowcase(char *str)
 {
-	int		i;
-	char	upper[ft_strlen(str) + 1];
-	
+	int	i;
+
 	if (!str)
-		return (NULL);
+		return (str);
 	i = 0;
 	while (str[i])
 	{
-		upper[i] = ft_toupper(str[i]);
-		i++;
+		if (str[i] >= 'A' && str[i] <= 'Z')
+			str[i] += 32;
+		++i;
 	}
-	upper[i] = '\0';
-	return (upper);
+	return (str);
 }
