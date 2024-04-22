@@ -12,7 +12,7 @@
 
 #ifndef UTILS_H
 # define UTILS_H
- 
+ :
 void	print(const char* str);
 void	throw_error(const char* message);
 void	help(void);

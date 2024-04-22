@@ -19,7 +19,9 @@ HEADERS_FLAG	= -I$(HEADERS_DIR) -I$(LIBFT_DIR)
 HEADERS			= $(wildcard $(HEADERS_DIR)/*.h) $(LIBFT_DIR)/libft.h
 
 SOURCES_DIR		= sources/
-SOURCE_FILES	= main.c
+SOURCE_FILES	= main.c \
+				  utils.c \
+				  events.c
 
 SOURCES			= $(addprefix $(SOURCES_DIR), $(SOURCE_FILES))
 

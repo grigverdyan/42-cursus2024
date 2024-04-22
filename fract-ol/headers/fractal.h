@@ -16,7 +16,8 @@
 /* Defined Parameters  */
 # define WIN_SIZE 500
 # define MIN_ITERATIONS 256
-
+# define MAX_ITERATIONS 256
+# define VIEW_CHANGE_SIZE 60
 # define DEFAULT_COLOR 265
 
 /* Fractals */
@@ -59,6 +60,7 @@ typedef struct s_fractal
 	double		offset_x;
 	double		offset_y;
 	int			iterations;	
+	int			lock;
 }	t_fractal;
 
 typedef struct s_engine

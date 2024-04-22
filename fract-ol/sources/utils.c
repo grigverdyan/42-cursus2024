@@ -10,7 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils.c"
+#include "utils.h"
+
+#include <stdlib.h>
+#include <unistd.h>
 
 void	print(const char* str)
 {
