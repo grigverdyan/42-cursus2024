@@ -1,20 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.h                                            :+:      :+:    :+:   */
+/*   graphic.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: grverdya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/20 20:32:44 by grverdya          #+#    #+#             */
-/*   Updated: 2024/04/23 21:38:29 by grverdya         ###   ########.fr       */
+/*   Created: 2024/04/23 22:19:11 by grverdya          #+#    #+#             */
+/*   Updated: 2024/04/23 22:20:41 by grverdya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef UTILS_H
-# define UTILS_H
+#ifndef GRAPHIC_H
+# define GRAPHIC_H
 
-void	print(const char* str);
-void	throw_error(const char* message);
-void	help(void);
+#include "fractal.h"
 
-#endif /* UTILS_H  */
+void	change_color(int key, t_engine *engine);
+void	change_view(int key, t_engine *engine);
+void	change_fractal(int key, t_engine *engine);
+
+#endif /* GRAPHIC_H */

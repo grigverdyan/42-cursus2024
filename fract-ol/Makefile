@@ -2,7 +2,7 @@
 
 TARGET			= fractol
 CC				= cc
-CFLAGS			= -Wall -Wextra -Werror -g
+CFLAGS			= -Wall -Wextra -Werror
 
 RM				= rm -rf
 MKDIR			= mkdir -p
@@ -27,7 +27,7 @@ SOURCES			= $(addprefix $(SOURCES_DIR), $(SOURCE_FILES))
 
 OBJS_DIR		= objs/
 OBJ_FILES		= $(SOURCE_FILES:.c=.o)
-OBJS			= $(addprefix $(OBJS_DIR), $(OBJ_FILES))
+OBJS			= $(addprefix3[M`3 $(OBJS_DIR), $(OBJ_FILES))
 
 LINKER			= -lft -L $(LIBFT_DIR)
 

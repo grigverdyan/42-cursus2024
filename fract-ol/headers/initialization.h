@@ -1,20 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.h                                            :+:      :+:    :+:   */
+/*   initialization.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: grverdya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/20 20:32:44 by grverdya          #+#    #+#             */
-/*   Updated: 2024/04/23 21:38:29 by grverdya         ###   ########.fr       */
+/*   Created: 2024/04/23 22:12:18 by grverdya          #+#    #+#             */
+/*   Updated: 2024/04/23 22:14:59 by grverdya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef UTILS_H
-# define UTILS_H
+#ifndef INITIALIZATION_H
+# define INITIALIZATION_H
 
-void	print(const char* str);
-void	throw_error(const char* message);
-void	help(void);
+#include "fractal.h"
 
-#endif /* UTILS_H  */
+void			start_engine(t_engine* engine, char* str);
+void			set_fractal(t_engine* engine, char* str);
+enum e_Fractal	get_fractal_type(char* str);
+
+#endif /* INITIALIZATION_H */
