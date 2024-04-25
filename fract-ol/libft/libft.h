@@ -6,7 +6,7 @@
 /*   By: grverdya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 15:23:14 by grverdya          #+#    #+#             */
-/*   Updated: 2024/04/20 18:18:57 by grverdya         ###   ########.fr       */
+/*   Updated: 2024/04/25 21:32:12 by grverdya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ char	*ft_strtrim(char const *s1, char const *set);
 char	*ft_itoa(int n);
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 char	**ft_split(char const *s, char c);
-char*	ft_struppcase(char* str);
-char*	ft_strlowcase(char* str);
+char	*ft_struppcase(char *str);
+char	*ft_strlowcase(char *str);
 size_t	ft_strlen(const char *s);
 size_t	ft_strlcpy(char *dst, const char *src, size_t len);
 size_t	ft_strlcat(char *dst, const char *src, size_t len);

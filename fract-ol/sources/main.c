@@ -6,19 +6,18 @@
 /*   By: grverdya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 20:17:46 by grverdya          #+#    #+#             */
-/*   Updated: 2024/04/23 22:36:10 by grverdya         ###   ########.fr       */
+/*   Updated: 2024/04/25 21:25:16 by grverdya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractal.h"
 #include "mlx.h"
 #include "visualization.h"
+#include "initialization.h"
 #include "utils.h"
 #include "events.h"
 
-#include <stdlib.h>
-
-int	main(int argc, char** argv)
+int	main(int argc, char **argv)
 {
 	t_engine	engine;
 
@@ -38,5 +37,3 @@ int	main(int argc, char** argv)
 	}
 	return (0);
 }
-
-

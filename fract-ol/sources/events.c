@@ -6,13 +6,16 @@
 /*   By: grverdya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 21:51:02 by grverdya          #+#    #+#             */
-/*   Updated: 2024/04/23 22:36:08 by grverdya         ###   ########.fr       */
+/*   Updated: 2024/04/25 21:10:55 by grverdya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "events.h"
 #include "mlx.h"
 #include "fractal.h"
+#include "visualization.h"
+#include "keys.h"
+#include "graphic.h"
 
 #include <stdlib.h>
 

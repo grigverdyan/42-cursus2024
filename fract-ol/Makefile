@@ -1,6 +1,6 @@
 .PHONY : all clean fclean re
 
-TARGET			= fractol
+TARGET			= fract-ol
 CC				= cc
 CFLAGS			= -Wall -Wextra -Werror
 
@@ -21,13 +21,17 @@ HEADERS			= $(wildcard $(HEADERS_DIR)/*.h) $(LIBFT_DIR)/libft.h
 SOURCES_DIR		= sources/
 SOURCE_FILES	= main.c \
 				  utils.c \
-				  events.c
+				  events.c \
+				  fractals.c \
+				  graphic.c \
+				  initialization.c \
+				  visualization.c
 
 SOURCES			= $(addprefix $(SOURCES_DIR), $(SOURCE_FILES))
 
 OBJS_DIR		= objs/
 OBJ_FILES		= $(SOURCE_FILES:.c=.o)
-OBJS			= $(addprefix3[M`3 $(OBJS_DIR), $(OBJ_FILES))
+OBJS			= $(addprefix $(OBJS_DIR), $(OBJ_FILES))
 
 LINKER			= -lft -L $(LIBFT_DIR)
 

@@ -6,7 +6,7 @@
 /*   By: grverdya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 20:24:14 by grverdya          #+#    #+#             */
-/*   Updated: 2024/04/20 20:36:03 by grverdya         ###   ########.fr       */
+/*   Updated: 2024/04/25 21:25:42 by grverdya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-void	print(const char* str)
+void	print(const char *str)
 {
 	size_t	i;
 
@@ -29,7 +29,7 @@ void	print(const char* str)
 	}
 }
 
-void	throw_error(const char* message)
+void	throw_error(const char *message)
 {
 	print(message);
 	exit(EXIT_FAILURE);

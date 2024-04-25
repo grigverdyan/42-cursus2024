@@ -6,7 +6,7 @@
 /*   By: grverdya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/27 15:19:21 by grverdya          #+#    #+#             */
-/*   Updated: 2024/01/27 15:19:27 by grverdya         ###   ########.fr       */
+/*   Updated: 2024/04/25 21:31:38 by grverdya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-		char	*sub;
+	char	*sub;
 	size_t	s_len;
 	size_t	i;
 

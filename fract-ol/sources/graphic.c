@@ -1,32 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   graphic_managment.c                                :+:      :+:    :+:   */
+/*   graphic.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: grverdya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 22:06:36 by grverdya          #+#    #+#             */
-/*   Updated: 2024/04/23 22:20:39 by grverdya         ###   ########.fr       */
+/*   Updated: 2024/04/25 21:12:23 by grverdya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "graphic_managment.h"
+#include "graphic.h"
 #include "keys.h"
+#include "fractal.h"
+#include "initialization.h"
 
 void	change_color(int key, t_engine *engine)
 {
 	if (key == KEY_Q)
-		engine->fractal.color += 0x300000;
+		engine->fractal.color += 0x400000;
 	else if (key == KEY_W)
-		engine->fractal.color += 0x030000;
+		engine->fractal.color += 0x040000;
 	else if (key == KEY_E)
-		engine->fractal.color += 0x003000;
+		engine->fractal.color += 0x004000;
 	else if (key == KEY_R)
-		engine->fractal.color += 0x000300;
+		engine->fractal.color += 0x000400;
 	else if (key == KEY_T)
-		engine->fractal.color += 0x000030;
+		engine->fractal.color += 0x000040;
 	else if (key == KEY_Y)
-		engine->fractal.color += 0x000003;
+		engine->fractal.color += 0x000004;
 	else if (key == KEY_A)
 		engine->fractal.color -= 0x300000;
 	else if (key == KEY_S)
@@ -37,10 +39,9 @@ void	change_color(int key, t_engine *engine)
 		engine->fractal.color -= 0x000300;
 	else if (key == KEY_G)
 		engine->fractal.color -= 0x000030;
-	else   if (key == KEY_H)
+	else if (key == KEY_H)
 		engine->fractal.color -= 0x000003;
 }
-
 
 void	change_view(int key, t_engine *engine)
 {
@@ -63,4 +64,3 @@ void	change_fractal(int key, t_engine *engine)
 	if (key == KEY_TWO)
 		engine->fractal.type = Julia;
 }
-
