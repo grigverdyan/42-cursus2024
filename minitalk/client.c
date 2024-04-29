@@ -2,11 +2,11 @@
 #include <signal.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "libft/libft.h"
+#include "ft_printf.h"
 
 void	throw_error(const char *message)
 {
-	perror;
+	perror(message);
 	exit(EXIT_FAILURE);;
 }
 
@@ -46,12 +46,9 @@ int	main(int argc, char **argv)
 		if (pid < 0)
 			throw_error("Error: PID wrong!");
 		send_to_server(pid, argv[2]);
-		write(1, "\n", 1);
-		ft_putstr_fd("Message bytes : ", 1);
-		ft_putnbr_fd(ft_strlen(argv[2]), 1);
-		write(1, "\n", 1);
+		ft_printf("\nMessage bytes : \n", ft_strlen(argv[2]));
 	}
 	else
-		ft_putendl_fd("Message to clinet : ", 1);
+		ft_printf("Message to clinet : ");
 	return (0);
 }

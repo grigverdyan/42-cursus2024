@@ -63,4 +63,12 @@ void	change_fractal(int key, t_engine *engine)
 	set_fractal(engine, "mandelbrot");
 	if (key == KEY_TWO)
 		engine->fractal.type = Julia;
+	if (key == KEY_THREE)
+		engine->fractal.type = Burning_Ship;
+	if (key == KEY_FOUR)
+		engine->fractal.type = Tricorn;
+	if (key == KEY_FIVE)
+		engine->fractal.type = Celtic_Mandelbar;
+	if (key == KEY_SIX)
+		engine->fractal.type = Mandelbox;
 }

@@ -67,12 +67,11 @@ enum e_Fractal	get_fractal_type(char *str)
 			return (Burning_Ship);
 		if (ft_strncmp(type, "tricorn", ft_strlen("tricorn")) == 0)
 			return (Tricorn);
-		if (ft_strncmp(type, "celtic_mandelbar", ft_strlen("celtic_mandelbar")) == 0)
+		if (ft_strncmp(type, "celtic_mandelbar",
+				ft_strlen("celtic_mandelbar")) == 0)
 			return (Celtic_Mandelbar);
 		if (ft_strncmp(type, "mandelbox", ft_strlen("mandelbox")) == 0)
 			return (Mandelbox);
-		if (ft_strncmp(type, "heart_mandelbrot", ft_strlen("heart_mandelbrot")) == 0)
-			return (Heart_Mandelbrot);
 	}
 	return (None);
 }

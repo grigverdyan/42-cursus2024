@@ -61,8 +61,6 @@ int	on_key_hook(int key, t_engine *engine)
 		change_fractal(key, engine);
 	else if (key == KEY_L && engine->fractal.type == Julia)
 		engine->fractal.lock ^= 1;
-//	else if (key == KEY_ZERO)
-//		set_fractal(engine, engine->fractal.type);
 	else if (key == KEY_ESC)
 		on_destroy(engine);
 	visualization(engine);

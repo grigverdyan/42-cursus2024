@@ -21,6 +21,5 @@ int	fr_burning_ship(t_fractal *fract, t_complex *c);
 int	fr_tricorn(t_fractal *fract, t_complex *c);
 int	fr_celtic_mandelbar(t_fractal *fract, t_complex *c);
 int	fr_mandelbox(t_fractal *fract, t_complex *c);
-int	fr_heart_mandelbrot(t_fractal *fract, t_complex* c);
 
 #endif /* FRACTALS_H */

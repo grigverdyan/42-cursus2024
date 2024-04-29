@@ -1,6 +1,6 @@
 #include <unistd.h>
 #include <signal.h>
-#include "libft/libft.h"
+#include "ft_printf.h"
 
 void	handle_signal(int sig)
 {
@@ -13,7 +13,7 @@ void	handle_signal(int sig)
 		msg = msg | 128;
 	if (size_bit == 8)
 	{
-		ft_putchar_fd(msg, 1);
+		ft_printf("%s", msg);
 		size_bit = 0;
 	}
 }
@@ -28,9 +28,7 @@ int	main(void)
 	sigaction(SIGUSR1, &sa, NULL);
 	sigaction(SIGUSR2, &sa, NULL);
 	pid = getpid();
-	ft_putstr_fd("Process ID:  ", 1);
-	ft_putnbr_fd(pid, 1);
-	write(1, "\n", 1);
+	ft_printf("Process ID : %d\n", pid);
 	while (1)
 		pause();
 	return (0);

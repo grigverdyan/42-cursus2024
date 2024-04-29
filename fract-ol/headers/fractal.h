@@ -33,8 +33,7 @@ enum e_Fractal
 	Burning_Ship,
 	Tricorn,
 	Celtic_Mandelbar,
-	Mandelbox,
-	Heart_Mandelbrot
+	Mandelbox
 };
 
 /* Fractal types  */

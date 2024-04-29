@@ -31,6 +31,8 @@ void	visualization(t_engine *engine)
 		y = -1;
 		if (fract->type != Julia)
 			c.re = (x / fract->zoom) + fract->offset_x;
+		else if (!fract->lock)
+			c.re = (fract->mouse_x / fract->zoom) + fract->offset_x;
 		while (++y < WIN_SIZE)
 		{
 			iter = calc_fractal(fract, &c, x, y);
@@ -45,7 +47,7 @@ void	set_pixel_color(t_engine *engine, int x, int y, int color)
 {
 	int	offset;
 
-	if (x < 0 || x >= WIN_SIZE || y < 0 || y >= WIN_SIZE)
+	if (x < 0 || y < 0 || x >= WIN_SIZE || y >= WIN_SIZE)
 		return ;
 	offset = (y * engine->image.line_len)
 		+ ((engine->image.pixel_bits / 8) * x);
@@ -73,7 +75,5 @@ int	calc_fractal(t_fractal *fract, t_complex *c, int x, int y)
 		iter = fr_celtic_mandelbar(fract, c);
 	else if (fract->type == Mandelbox)
 		iter = fr_mandelbox(fract, c);
-	else if (fract->type == Heart_Mandelbrot)
-		iter = fr_heart_mandelbrot(fract, c);
 	return (iter);
 }

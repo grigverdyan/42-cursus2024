@@ -2,7 +2,7 @@
 
 TARGET			= fract-ol
 CC				= cc
-CFLAGS			= -Wall -Wextra -Werror
+CFLAGS			= -Wall -Wextra -Werror -g
 
 RM				= rm -rf
 MKDIR			= mkdir -p
@@ -23,6 +23,7 @@ SOURCE_FILES	= main.c \
 				  utils.c \
 				  events.c \
 				  fractals.c \
+				  fractals2.c \
 				  graphic.c \
 				  initialization.c \
 				  visualization.c

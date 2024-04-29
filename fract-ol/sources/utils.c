@@ -37,11 +37,11 @@ void	throw_error(const char *message)
 
 void	help(void)
 {
-	print(" +------------------ Fract-ol helper ----------------------+\n");
+	print(" +------------------ Fract-ol HELP ------------------------+\n");
 	print(" |                                                         |\n");
 	print(" | Usage: ./fractol [mandelbrot / julia / burning_ship     |\n");
-	print(" |                   tricorn / mandelbox /                 |\n");
-	print(" |                   celtic_mandelbar]                     |\n");
+	print(" |                   tricorn / celtic_mandelbar /          |\n");
+	print(" |                   mandelbox ]                           |\n");
 	print(" |                                                         |\n");
 	print(" | e.g: ./fractol mandelbrot                               |\n");
 	print(" |                                                         |\n");
@@ -49,12 +49,10 @@ void	help(void)
 	print(" |                                                         |\n");
 	print(" | Press ESC to close the window                           |\n");
 	print(" | Press one of [1-6] to move to another fractal           |\n");
-	print(" | Press one of [Q-Y] keys to change the color of fractal  |\n");
-	print(" | Press one of [A-H] keys to change the color of fractal  |\n");
+	print(" | Press [Q-Y][A-H] keys to change the color of the fractal|\n");
 	print(" | Use mouse scroll to zoom in and out of the fractal      |\n");
 	print(" | Press the arrow keys to change the viewpoint            |\n");
 	print(" | Press L to lock Julia's fractal                         |\n");
-	print(" | Press Zero to reset the fractal                         |\n");
 	print(" +---------------------------------------------------------+\n");
 	exit(EXIT_SUCCESS);
 }
