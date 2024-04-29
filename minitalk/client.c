@@ -1,8 +1,8 @@
-#include <unistd.h>
-#include <signal.h>
-#include <stdlib.h>
-#include <stdio.h>
+#include "libft.h"
 #include "ft_printf.h"
+#include <signal.h>
+#include <stdio.h>
+#include <string.h>
 
 void	throw_error(const char *message)
 {
@@ -10,45 +10,63 @@ void	throw_error(const char *message)
 	exit(EXIT_FAILURE);;
 }
 
-void	send_to_server(int pid, char *msg)
+void	send_signal(int pid, unsigned char character)
 {
-	size_t	j;
-	size_t	len;
-	size_t	index;
+	int				i;
+	unsigned char	temp_char;
 
-	len = ft_strlen(msg);
-	index = -1;
-	while (msg[++index])
+	i = 8;
+	temp_char = character;
+	while (i > 0)
 	{
-		j = -1;
-		while (++j < 8)
+		i--;
+		temp_char = (character >> i);
+		if (temp_char % 2 != 0)
 		{
-			if ((msg[index] >> j) & 1)
-			{
-				if (kill(pid, SIGUSR1) < 0)
-					throw_error("Error sending signal to server!");
-			}
-			else
-				if (kill(pid, SIGUSR2) < 0)
-					throw_error("Error sending signal to server!");
-			usleep(100);
+			if (kill(pid, SIGUSR1) < 0)
+				throw_error("Error sending signal to server!");
 		}
+		else if (kill(pid, SIGUSR2) < 0)
+				throw_error("Error sending signal to server!");
+		usleep(100);
 	}
 }
-
+/*
+void	handle_server_signal(int signal, siginfo_t *info, void *context)
+{
+	(void)context;
+	(void)info;
+	if (signal != SIGUSR1)
+		throw_error("Message did not reached to the server successfully\n");
+	else
+		ft_printf("Message reached to the server successfully\n");
+	exit(EXIT_SUCCESS);
+}
+*/
 int	main(int argc, char **argv)
 {
-	int	pid;
+	pid_t		server_pid;
+	const char	*message;
+	size_t		i;
+//	struct sigaction sa;
 
-	if (argc == 3)
+	if (argc != 3)
 	{
-		pid = ft_atoi(argv[1]);
-		if (pid < 0)
-			throw_error("Error: PID wrong!");
-		send_to_server(pid, argv[2]);
-		ft_printf("\nMessage bytes : \n", ft_strlen(argv[2]));
+		ft_printf("Usage: %s <pid> <message>\n", argv[0]);
+		exit(EXIT_FAILURE);
 	}
-	else
-		ft_printf("Message to clinet : ");
+	server_pid = ft_atoi(argv[1]);
+	if (server_pid < 0)
+		throw_error("Error getting valid server PID!");
+	message = argv[2];
+	i = -1;
+//    sa.sa_sigaction= handle_server_signal;
+//    sigemptyset(&sa.sa_mask);
+//    sa.sa_flags = 0;
+//    sigaction(SIGUSR1, &sa, NULL);
+	while (message[++i])
+		send_signal(server_pid, message[i]);
+	send_signal(server_pid, message[i]);
+//	pause();
 	return (0);
 }
