@@ -29,7 +29,7 @@ int	main(int argc, char **argv)
 	nums_count = check_args(argc, argv);
 	unordered = get_nums(nums_count, argv);
 	check_duplicates(unordered, nums_count);
-	if (!is_sorted(unordered, nums_count))
+	if (is_sorted(unordered, nums_count))
 		ft_free(unordered, sorted, NULL);
 	sorted = copy_into_sorted(unordered, nums_count);
 	if (nums_count == 2)

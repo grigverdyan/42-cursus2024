@@ -14,7 +14,8 @@
 
 void	error_message(char *sms)
 {
-	write(2, sms, ft_strlen(sms));
+	if (sms)
+		write(2, sms, ft_strlen(sms));
 	exit(EXIT_FAILURE);
 }
 

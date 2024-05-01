@@ -48,7 +48,7 @@ void	push_stack(t_stack *from, t_stack *to)
 		return ;
 	new_lst = malloc(sizeof(t_lst));
 	if (!new_lst)
-		error_message("[MALLOC ERROR]: dynamic memory allocation error!");
+		error_message("Error\n");
 	++to->nodes;
 	new_lst->value = from->head->value;
 	if (to->head == NULL)

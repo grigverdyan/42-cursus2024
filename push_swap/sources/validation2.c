@@ -93,7 +93,7 @@ int	is_sorted(int *unordered, int size)
 	while (++i < size)
 	{
 		if (unordered[i] <= unordered[i - 1])
-			return (1);
+			return (0);
 	}
-	return (0);
+	return (1);
 }

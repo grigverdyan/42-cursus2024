@@ -54,12 +54,12 @@ int	*get_nums(int nums_count, char **argv)
 	indx[2] = -1;
 	nums = (int *)malloc(sizeof(int) * nums_count);
 	if (!nums)
-		error_message("[MALLOC ERROR]: Dynamic memory allocation fault!\n");
+		error_message("Error\n");
 	while (argv[++indx[0]])
 	{
 		temp = ft_split(argv[indx[0]], ' ');
 		if (!temp)
-			error_message("[MALLOC ERROR]: Dynamic memory alloc fault!\n");
+			error_message("Error\n");
 		else if (temp[0] == NULL)
 			free_matrix(temp, 1);
 		else
