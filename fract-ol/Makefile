@@ -1,8 +1,8 @@
 .PHONY : all clean fclean re
 
-TARGET			= fract-ol
+TARGET			= fractol
 CC				= cc
-CFLAGS			= -Wall -Wextra -Werror -g
+CFLAGS			= -Wall -Wextra -Werror
 
 RM				= rm -rf
 MKDIR			= mkdir -p
