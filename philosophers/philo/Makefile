@@ -31,7 +31,7 @@ all : $(TARGET)
 
 $(TARGET) : $(PHILO_OBJS)
 	echo $(GREEN) "  Creating $(TARGET)" $(RESET)
-	$(CC) $(CFLAGS) $(TARGET_OBJS) -o $(TARGET)	
+	$(CC) $(CFLAGS) $(PHILO_OBJS) -o $(TARGET)	
 
 $(OBJ_DIR)/%.o : $(SRC_DIR)/%.c | $(OBJ_DIR)
 	$(CC) $(CFLAGS) $(HEADERS_FLAG) -c $< -o $@
