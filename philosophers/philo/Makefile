@@ -1,0 +1,50 @@
+.PHONY : all clean fclean re
+
+TARGET			= philo
+CC				= cc
+CFLAGS			= -Wall -Wextra -Werror -g
+RM				= rm -rf
+MKDIR			= mkdir -p
+
+HEADERS_DIR		= headers
+HEADERS_FLAG	= -I$(HEADERS_DIR)
+HEADERS			= $(HEADERS_DIR)/*.h
+
+SRC_DIR			= sources
+SRC_FILES		= $(wildcard $(SRC_DIR)/*.c)
+
+PHILO_OBJS		= $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC_FILES))
+OBJ_DIR			= objs
+
+# Colors
+RESET			= "\033[0m"
+BLACK    		= "\033[30m"    # Black
+RED      		= "\033[31m"    # Red
+GREEN    		= "\033[32m"    # Green
+YELLOW   		= "\033[33m"    # Yellow
+BLUE     		= "\033[34m"    # Blue
+MAGENTA  		= "\033[35m"    # Magenta
+CYAN     		= "\033[36m"    # Cyan
+WHITE    		= "\033[37m"    # White
+
+all : $(TARGET) 
+
+$(TARGET) : $(PHILO_OBJS)
+	echo $(GREEN) "  Creating $(TARGET)" $(RESET)
+	$(CC) $(CFLAGS) $(TARGET_OBJS) -o $(TARGET)	
+
+$(OBJ_DIR)/%.o : $(SRC_DIR)/%.c | $(OBJ_DIR)
+	$(CC) $(CFLAGS) $(HEADERS_FLAG) -c $< -o $@
+
+$(OBJ_DIR) :
+	$(MKDIR $(OBJ_DIR)
+
+clean :
+	$(RM) $(PHILO_OBJS)
+	echo $(MAGENTA) "  Removing Object Files" $(RESET)
+
+fclean : clean
+	$(RM) $(TARGET)
+	echo $(RED) "  Removing $(TARGET)" $(RESET)
+
+re : fclean all
