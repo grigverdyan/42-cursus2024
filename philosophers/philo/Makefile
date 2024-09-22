@@ -37,7 +37,7 @@ $(OBJ_DIR)/%.o : $(SRC_DIR)/%.c | $(OBJ_DIR)
 	$(CC) $(CFLAGS) $(HEADERS_FLAG) -c $< -o $@
 
 $(OBJ_DIR) :
-	$(MKDIR $(OBJ_DIR)
+	$(MKDIR) $(OBJ_DIR)
 
 clean :
 	$(RM) $(PHILO_OBJS)

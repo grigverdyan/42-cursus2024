@@ -1,47 +1,44 @@
 #include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <sys/time.h>
+#include "utils.h"
 
-static int	is_space(char c)
+void	error_message(const char *str, int signal)
 {
-	if (c == '\t' || c == '\n' || c == '\v'
-		|| c == '\f' || c == '\r' || c == ' ')
-		return (1);
-	return (0);
-}
-
-int	ft_atoi(char *str)
-{
-	int	i;
-	int	sign;
-	int	number;
-
-	sign = 1;
-	i = 0;
-	while (str[i] && is_space(str[i]))
-		++i;
-	while (str[i] && (str[i] == '+' || str[i] == '-'))
-	{
-		if (str[i] == '-')
-			sign *= -1;
-		++i;
-	}
-	number = 0;
-	while (str[i] && (str[i] >= '0' && str[i] <= '9'))
-	{
-		number *= 10;
-		number += (str[i] - '0');
-		++i;
-	}
-	return (sign * number);
+	if (str)
+		write(2, str, ft_strlen(str) + 1);
+	exit(signal);
 }
 
 void    help(void)
 {
-    printf("./philo number_of_philosophers \
-            time_to die time_to_eat time_to_sleap \
-            [number_of_times_each_philosopher_must_eat]\n\n \
-            number_of_philosophers: Number of philosophers and forks\n\
-            time_to_die(ms): Time of die if not eating since lastmeal\n\
-            time_to_eat(ms): Time of eating\n\
-            time_to_sleep(ms): Time of sleeping\n\
-            number_of_times_each_philosopher_must_eat: Eating count\n");            
+    printf("\
+	./philo number_of_philosophers \
+    time_to_die time_to_eat time_to_sleap \
+    [number_of_times_each_philosopher_must_eat]\n\n\
+    number_of_philosophers: Number of philosophers and forks(1 to 200)\n\
+    time_to_die(ms): Time of die if not eating since lastmeal\n\
+    time_to_eat(ms): Time of eating\n\
+    time_to_sleep(ms): Time of sleeping\n\
+    [number_of_times_each_philosopher_must_eat]: Eating count\n");
+	exit(EXIT_FAILURE);           
+}
+
+void	destroy_mutexes(t_data *dt, const char *str, int mutexes, int signal)
+{
+	pthread_mutex_destroy(&dt->write_lock);
+	pthread_mutex_destroy(&dt->meal_lock);
+	while (--mutexes >= 0)
+		pthread_mutex_destroy(&dt->forks[mutexes]);
+	error_message(str, signal);
+}
+
+size_t	get_time_now(void)
+{
+	t_time	time;
+
+	if (gettimeofday(&time, NULL) == -1)
+		error_message("[Error] Time fault\n", EXIT_FAILURE);
+	return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }
