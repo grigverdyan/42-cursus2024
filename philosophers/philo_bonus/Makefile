@@ -1,6 +1,6 @@
 .PHONY : all clean fclean re
 
-TARGET			= philo
+TARGET			= philo_bonus
 CC				= cc
 CFLAGS			= -Wall -Wextra -Werror -g
 RM				= rm -rf

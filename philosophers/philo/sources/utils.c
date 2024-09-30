@@ -42,3 +42,22 @@ size_t	get_time_now(void)
 		error_message("[Error] Time fault\n", EXIT_FAILURE);
 	return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }
+
+void	ft_usleep(size_t mls)
+{
+	size_t	start;
+
+	start = get_time_now();
+	while (get_time_now() - start < mls)
+		usleep(500);
+}
+
+void	print_info(t_philo *philo, char *info)
+{
+	size_t	time;
+
+	pthread_mutex_lock(philo->mutexes.write_lock);
+	time = get_time_now() - philo->times.born_time;
+	printf(GREEN"%ld"RESET" %d%s\n", time, philo->id + 1, info);
+	pthread_mutex_unlock(philo->mutexes.write_lock);
+}
