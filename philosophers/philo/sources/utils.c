@@ -1,7 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: grverdya <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/02 14:59:00 by grverdya          #+#    #+#             */
+/*   Updated: 2024/10/02 15:05:21 by grverdya         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
-#include <sys/time.h>
 #include "utils.h"
 
 void	error_message(const char *str, int signal)
@@ -11,9 +22,9 @@ void	error_message(const char *str, int signal)
 	exit(signal);
 }
 
-void    help(void)
+void	help(void)
 {
-    printf("\
+	printf("\
 	./philo number_of_philosophers \
     time_to_die time_to_eat time_to_sleap \
     [number_of_times_each_philosopher_must_eat]\n\n\
@@ -22,7 +33,7 @@ void    help(void)
     time_to_eat(ms): Time of eating\n\
     time_to_sleep(ms): Time of sleeping\n\
     [number_of_times_each_philosopher_must_eat]: Eating count\n");
-	exit(EXIT_FAILURE);           
+	exit(EXIT_FAILURE);
 }
 
 void	destroy_mutexes(t_data *dt, const char *str, int mutexes, int signal)
@@ -32,24 +43,6 @@ void	destroy_mutexes(t_data *dt, const char *str, int mutexes, int signal)
 	while (--mutexes >= 0)
 		pthread_mutex_destroy(&dt->forks[mutexes]);
 	error_message(str, signal);
-}
-
-size_t	get_time_now(void)
-{
-	t_time	time;
-
-	if (gettimeofday(&time, NULL) == -1)
-		error_message("[Error] Time fault\n", EXIT_FAILURE);
-	return (time.tv_sec * 1000 + time.tv_usec / 1000);
-}
-
-void	ft_usleep(size_t mls)
-{
-	size_t	start;
-
-	start = get_time_now();
-	while (get_time_now() - start < mls)
-		usleep(500);
 }
 
 void	print_info(t_philo *philo, char *info)
