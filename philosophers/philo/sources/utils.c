@@ -38,10 +38,10 @@ void	help(void)
 
 void	destroy_mutexes(t_data *dt, const char *str, int mutexes, int signal)
 {
-	pthread_mutex_destroy(&dt->write_lock);
-	pthread_mutex_destroy(&dt->meal_lock);
 	while (--mutexes >= 0)
 		pthread_mutex_destroy(&dt->forks[mutexes]);
+	pthread_mutex_destroy(&dt->write_lock);
+	pthread_mutex_destroy(&dt->meal_lock);
 	error_message(str, signal);
 }
 

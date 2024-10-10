@@ -111,7 +111,7 @@ void	simulation(t_data *dt, int ph_count)
 	t_id	control_id;
 
 	if (pthread_create(&control_id, NULL, &control, dt->philos) != 0)
-		destroy_mutexes(dt, "[Thread Creation ERROR]\n", ph_count, 1);
+		destroy_mutexes(dt, "[Thread Creation ERROR]\n", ph_count, EXIT_FAILURE);
 	i = -1;
 	while (++i < ph_count)
 	{
@@ -121,11 +121,11 @@ void	simulation(t_data *dt, int ph_count)
 				ph_count, EXIT_FAILURE);
 	}
 	if (pthread_join(control_id, NULL) != 0)
-		destroy_mutexes(dt, "[Thread Join ERROR]\n", ph_count, 1);
+		destroy_mutexes(dt, "[Thread Join ERROR]\n", ph_count, EXIT_FAILURE);
 	i = -1;
 	while (++i < ph_count)
 	{
 		if (pthread_detach(dt->philos[i].thread_id) != 0)
-			destroy_mutexes(dt, "[Thread Detach ERROR]\n", ph_count, 1);
+			destroy_mutexes(dt, "[Thread Detach ERROR]\n", ph_count, EXIT_FAILURE);
 	}
 }
