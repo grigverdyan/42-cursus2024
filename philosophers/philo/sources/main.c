@@ -20,9 +20,10 @@ int	main(int argc, char **argv)
 {
 	t_data	data;
 
-	check_params(argc, argv);
+	if (check_params(argc, argv) == 0)
+		return (1);
 	init_data(&data, argv);
 	simulation(&data, data.philos[0].times.philo_count);
 	destroy_mutexes(&data, NULL, data.philos->times.philo_count, EXIT_SUCCESS);
-	return (EXIT_SUCCESS);
+	return (0);
 }

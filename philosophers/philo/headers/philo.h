@@ -17,9 +17,9 @@
 
 # define PHILO_MAX_COUNT 200
 
-# define RESET    "\033[0m"
-# define RED      "\033[31m"
-# define GREEN    "\033[32m"
+# define RESET   "\033[0m"
+# define RED     "\033[31m"
+# define GREEN   "\033[32m"
 
 typedef pthread_t		t_id;
 typedef pthread_mutex_t	t_mutex;

@@ -19,24 +19,21 @@
 
 void	basic_routine(t_philo *philo)
 {
-	while (true)
-	{
-		pthread_mutex_lock(philo->mutexes.left_fork);
-		print_info(philo, " has taken a fork");
-		pthread_mutex_lock(philo->mutexes.right_fork);
-		print_info(philo, " has taken a fork");
-		pthread_mutex_lock(philo->mutexes.meal_lock);
-		print_info(philo, " is eating");
-		philo->times.last_meal = get_time_now();
-		philo->times.has_eaten += 1;
-		pthread_mutex_unlock(philo->mutexes.meal_lock);
-		ft_usleep(philo->times.eat);
-		pthread_mutex_unlock(philo->mutexes.left_fork);
-		pthread_mutex_unlock(philo->mutexes.right_fork);
-		print_info(philo, " is sleeping");
-		ft_usleep(philo->times.sleep);
-		print_info(philo, " is thinking");
-	}
+	pthread_mutex_lock(philo->mutexes.left_fork);
+	print_info(philo, " has taken a fork");
+	pthread_mutex_lock(philo->mutexes.right_fork);
+	print_info(philo, " has taken a fork");
+	pthread_mutex_lock(philo->mutexes.meal_lock);
+	print_info(philo, " is eating");
+	philo->times.last_meal = get_time_now();
+	philo->times.has_eaten += 1;
+	pthread_mutex_unlock(philo->mutexes.meal_lock);
+	ft_usleep(philo->times.eat);
+	pthread_mutex_unlock(philo->mutexes.left_fork);
+	pthread_mutex_unlock(philo->mutexes.right_fork);
+	print_info(philo, " is sleeping");
+	ft_usleep(philo->times.sleep);
+	print_info(philo, " is thinking");
 }
 
 void	*routine(void *arg)
@@ -50,7 +47,8 @@ void	*routine(void *arg)
 	philo->times.born_time = get_time_now();
 	philo->times.last_meal = get_time_now();
 	pthread_mutex_unlock(philo->mutexes.meal_lock);
-	basic_routine(philo);
+	while (true)
+		basic_routine(philo);
 	return (NULL);
 }
 
@@ -111,7 +109,7 @@ void	simulation(t_data *dt, int ph_count)
 	t_id	control_id;
 
 	if (pthread_create(&control_id, NULL, &control, dt->philos) != 0)
-		destroy_mutexes(dt, "[Thread Creation ERROR]\n", ph_count, EXIT_FAILURE);
+		destroy_mutexes(dt, "[Thread Creation ERROR]\n", ph_count, 1);
 	i = -1;
 	while (++i < ph_count)
 	{
@@ -121,11 +119,11 @@ void	simulation(t_data *dt, int ph_count)
 				ph_count, EXIT_FAILURE);
 	}
 	if (pthread_join(control_id, NULL) != 0)
-		destroy_mutexes(dt, "[Thread Join ERROR]\n", ph_count, EXIT_FAILURE);
+		destroy_mutexes(dt, "[Thread Join ERROR]\n", ph_count, 1);
 	i = -1;
 	while (++i < ph_count)
 	{
 		if (pthread_detach(dt->philos[i].thread_id) != 0)
-			destroy_mutexes(dt, "[Thread Detach ERROR]\n", ph_count, EXIT_FAILURE);
+			destroy_mutexes(dt, "[Thread Detach ERROR]\n", ph_count, 1);
 	}
 }

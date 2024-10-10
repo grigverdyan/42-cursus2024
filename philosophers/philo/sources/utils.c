@@ -15,11 +15,10 @@
 #include <stdlib.h>
 #include "utils.h"
 
-void	error_message(const char *str, int signal)
+void	error_message(const char *str)
 {
 	if (str)
 		write(2, str, ft_strlen(str) + 1);
-	exit(signal);
 }
 
 void	help(void)
@@ -33,7 +32,6 @@ void	help(void)
     time_to_eat(ms): Time of eating\n\
     time_to_sleep(ms): Time of sleeping\n\
     [number_of_times_each_philosopher_must_eat]: Eating count\n");
-	exit(EXIT_FAILURE);
 }
 
 void	destroy_mutexes(t_data *dt, const char *str, int mutexes, int signal)
@@ -42,7 +40,9 @@ void	destroy_mutexes(t_data *dt, const char *str, int mutexes, int signal)
 		pthread_mutex_destroy(&dt->forks[mutexes]);
 	pthread_mutex_destroy(&dt->write_lock);
 	pthread_mutex_destroy(&dt->meal_lock);
-	error_message(str, signal);
+	free(dt->forks);
+	free(dt->philos);
+	error_message(str);
 }
 
 void	print_info(t_philo *philo, char *info)

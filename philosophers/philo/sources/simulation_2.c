@@ -18,7 +18,7 @@
 #include "simulation.h"
 #include "utils.h"
 
-void	check_params(int argc, char **argv)
+int	check_params(int argc, char **argv)
 {
 	long	num;
 	int		i;
@@ -30,44 +30,49 @@ void	check_params(int argc, char **argv)
 	{
 		num = ft_atoi(argv[i]);
 		if (i == 1 && (num < 1 || num > PHILO_MAX_COUNT))
+		{
 			error_message("[Error] Wrong Philo Count\n", EXIT_FAILURE);
+			return (0);
+		}
 		if (i == 5 && (num < 0 || num > INT_MAX))
+		{
 			error_message("[Error] Wrong Philo Eating Count\n", EXIT_FAILURE);
+			return (0);
+		}
 		if (i != 1 && i != 5 && (num < 1 || num > INT_MAX))
+		{
 			error_message("[Error] Wrong Parameters\n", EXIT_FAILURE);
+			return (0);
+		}
 	}
 }
 
 void	init_data(t_data *dt, char **argv)
 {
-	t_philo	philos[PHILO_MAX_COUNT];
-	t_mutex	forks[PHILO_MAX_COUNT];
 	int		i;
 	int		philo_count;
 
 	if (pthread_mutex_init(&dt->write_lock, NULL) != 0
 		|| pthread_mutex_init(&dt->meal_lock, NULL) != 0)
 		destroy_mutexes(dt, "[Error] Mutex Fault\n", -1, EXIT_FAILURE);
-	dt->forks = forks;
 	i = -1;
 	philo_count = ft_atoi(argv[1]);
+	dt->forks = (t_mutex *)malloc(sizeof(t_mutex) * philo_count);
 	while (++i < philo_count)
 	{
 		if (pthread_mutex_init(&dt->forks[i], NULL) != 0)
 			destroy_mutexes(dt, "[Error] Mutex Fault\n", i, EXIT_FAILURE);
 	}
-	dt->philos = philos;
+	dt->philos = (t_philo *)malloc(sizeof(t_philo) * philo_count);
 	init_philos(dt, argv);
 }
 
 void	init_philos(t_data *dt, char **argv)
 {
 	int	i;
-	int	philo_count;
 
-	philo_count = ft_atoi(argv[1]);
 	i = -1;
-	while (++i < philo_count)
+	while (++i < ft_atoi(argv[1]))
 	{
 		dt->philos[i].id = i;
 		dt->philos[i].times.born_time = get_time_now();
@@ -79,11 +84,12 @@ void	init_philos(t_data *dt, char **argv)
 		if (argv[5])
 			dt->philos[i].times.must_eat = ft_atoi(argv[5]);
 		dt->philos[i].times.has_eaten = 0;
-		dt->philos[i].times.philo_count = philo_count;
+		dt->philos[i].times.philo_count = ft_atoi(argv[1]);
 		dt->philos[i].mutexes.left_fork = &dt->forks[i];
-		dt->philos[i].mutexes.right_fork = &dt->forks[i - 1];
 		if (i == 0)
-			dt->philos[i].mutexes.right_fork = &dt->forks[philo_count - 1];
+			dt->philos[i].mutexes.right_fork = &dt->forks[ft_atoi(argv[1]) - 1];
+		else
+			dt->philos[i].mutexes.right_fork = &dt->forks[i - 1];
 		dt->philos[i].mutexes.write_lock = &dt->write_lock;
 		dt->philos[i].mutexes.meal_lock = &dt->meal_lock;
 	}
