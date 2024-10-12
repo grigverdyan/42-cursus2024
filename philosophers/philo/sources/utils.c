@@ -6,7 +6,7 @@
 /*   By: grverdya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 14:59:00 by grverdya          #+#    #+#             */
-/*   Updated: 2024/10/02 15:05:21 by grverdya         ###   ########.fr       */
+/*   Updated: 2024/10/11 16:32:58 by grverdya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,14 @@
 #include <stdlib.h>
 #include "utils.h"
 
-void	error_message(const char *str)
+int	error_message(const char *str)
 {
 	if (str)
 		write(2, str, ft_strlen(str) + 1);
+	return (0);
 }
 
-void	help(void)
+int	help(void)
 {
 	printf("\
 	./philo number_of_philosophers \
@@ -32,9 +33,10 @@ void	help(void)
     time_to_eat(ms): Time of eating\n\
     time_to_sleep(ms): Time of sleeping\n\
     [number_of_times_each_philosopher_must_eat]: Eating count\n");
+	return (0);
 }
 
-void	destroy_mutexes(t_data *dt, const char *str, int mutexes, int signal)
+int	destroy_mutexes(t_data *dt, const char *str, int mutexes)
 {
 	while (--mutexes >= 0)
 		pthread_mutex_destroy(&dt->forks[mutexes]);
@@ -42,7 +44,7 @@ void	destroy_mutexes(t_data *dt, const char *str, int mutexes, int signal)
 	pthread_mutex_destroy(&dt->meal_lock);
 	free(dt->forks);
 	free(dt->philos);
-	error_message(str);
+	return (error_message(str));
 }
 
 void	print_info(t_philo *philo, char *info)

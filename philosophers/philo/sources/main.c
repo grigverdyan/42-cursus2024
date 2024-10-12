@@ -22,8 +22,11 @@ int	main(int argc, char **argv)
 
 	if (check_params(argc, argv) == 0)
 		return (1);
-	init_data(&data, argv);
-	simulation(&data, data.philos[0].times.philo_count);
-	destroy_mutexes(&data, NULL, data.philos->times.philo_count, EXIT_SUCCESS);
+	if (init_data(&data, argv) == 0)
+		return (1);
+	if (simulation(&data, data.philos[0].times.philo_count) == 0)
+		return (1);
+	if (destroy_mutexes(&data, NULL, data.philos->times.philo_count) == 0)
+		return (1);
 	return (0);
 }

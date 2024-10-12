@@ -58,7 +58,7 @@ size_t	get_time_now(void)
 	t_time	time;
 
 	if (gettimeofday(&time, NULL) == -1)
-		error_message("[Error] Time fault\n", EXIT_FAILURE);
+		return (error_message("[Error] Time fault\n"));
 	return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }
 

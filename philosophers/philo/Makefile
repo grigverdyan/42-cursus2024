@@ -2,7 +2,7 @@
 
 TARGET			= philo
 CC				= cc
-CFLAGS			= -Wall -Wextra -Werror -fsanitize=thread # -g
+CFLAGS			= -Wall -Wextra -Werror #-fsanitize=thread # -g
 RM				= rm -rf
 MKDIR			= mkdir -p
 

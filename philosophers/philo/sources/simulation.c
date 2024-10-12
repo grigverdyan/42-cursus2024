@@ -6,7 +6,7 @@
 /*   By: grverdya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 15:05:39 by grverdya          #+#    #+#             */
-/*   Updated: 2024/10/02 15:46:42 by grverdya         ###   ########.fr       */
+/*   Updated: 2024/10/11 16:32:45 by grverdya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,27 +103,28 @@ void	*control(void *arg)
 	}
 }
 
-void	simulation(t_data *dt, int ph_count)
+int	simulation(t_data *dt, int ph_count)
 {
 	int		i;
 	t_id	control_id;
 
 	if (pthread_create(&control_id, NULL, &control, dt->philos) != 0)
-		destroy_mutexes(dt, "[Thread Creation ERROR]\n", ph_count, 1);
+		return (destroy_mutexes(dt, "[Thread Creation ERROR]\n", ph_count));
 	i = -1;
 	while (++i < ph_count)
 	{
 		if (pthread_create(&dt->philos[i].thread_id, NULL,
 				routine, &dt->philos[i]) != 0)
-			destroy_mutexes(dt, "[Error] Thread creation fault\n",
-				ph_count, EXIT_FAILURE);
+			return (destroy_mutexes(dt, "[Error] Thread creation fault\n",
+					ph_count));
 	}
 	if (pthread_join(control_id, NULL) != 0)
-		destroy_mutexes(dt, "[Thread Join ERROR]\n", ph_count, 1);
+		return (destroy_mutexes(dt, "[Thread Join ERROR]\n", ph_count));
 	i = -1;
 	while (++i < ph_count)
 	{
 		if (pthread_detach(dt->philos[i].thread_id) != 0)
-			destroy_mutexes(dt, "[Thread Detach ERROR]\n", ph_count, 1);
+			return (destroy_mutexes(dt, "[Thread Detach ERROR]\n", ph_count));
 	}
+	return (1);
 }

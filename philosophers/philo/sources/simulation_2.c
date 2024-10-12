@@ -24,47 +24,44 @@ int	check_params(int argc, char **argv)
 	int		i;
 
 	if (argc != 5 && argc != 6)
-		help();
+		return (help());
 	i = 0;
 	while (++i < argc)
 	{
 		num = ft_atoi(argv[i]);
 		if (i == 1 && (num < 1 || num > PHILO_MAX_COUNT))
-		{
-			error_message("[Error] Wrong Philo Count\n", EXIT_FAILURE);
-			return (0);
-		}
+			return (error_message("[Error] Wrong Philo Count\n"));
 		if (i == 5 && (num < 0 || num > INT_MAX))
-		{
-			error_message("[Error] Wrong Philo Eating Count\n", EXIT_FAILURE);
-			return (0);
-		}
+			return (error_message("[Error] Wrong Philo Eating Count\n"));
 		if (i != 1 && i != 5 && (num < 1 || num > INT_MAX))
-		{
-			error_message("[Error] Wrong Parameters\n", EXIT_FAILURE);
-			return (0);
-		}
+			return (error_message("[Error] Wrong Parameters\n"));
 	}
+	return (1);
 }
 
-void	init_data(t_data *dt, char **argv)
+int	init_data(t_data *dt, char **argv)
 {
 	int		i;
 	int		philo_count;
 
 	if (pthread_mutex_init(&dt->write_lock, NULL) != 0
 		|| pthread_mutex_init(&dt->meal_lock, NULL) != 0)
-		destroy_mutexes(dt, "[Error] Mutex Fault\n", -1, EXIT_FAILURE);
+		return (destroy_mutexes(dt, "[Error] Mutex Fault\n", -1));
 	i = -1;
 	philo_count = ft_atoi(argv[1]);
 	dt->forks = (t_mutex *)malloc(sizeof(t_mutex) * philo_count);
+	if (!dt->forks)
+		return (error_message("[Error] Allocation fault\n"));
 	while (++i < philo_count)
 	{
 		if (pthread_mutex_init(&dt->forks[i], NULL) != 0)
-			destroy_mutexes(dt, "[Error] Mutex Fault\n", i, EXIT_FAILURE);
+			return (destroy_mutexes(dt, "[Error] Mutex Fault\n", i));
 	}
 	dt->philos = (t_philo *)malloc(sizeof(t_philo) * philo_count);
+	if (!dt->philos)
+		return (error_message("[Error] Allocation fault\n"));
 	init_philos(dt, argv);
+	return (1);
 }
 
 void	init_philos(t_data *dt, char **argv)
