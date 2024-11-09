@@ -34,6 +34,8 @@
 > an iterative mathematical construct. A fractal is a fragmented geometrical figure that infinitely repeats itself at \
 > smaller scales. This project uses the school's graphical library, MiniLibX.
 
+For detailed information, refer to the [**subject of this project**](en.subject.pdf).
+
 	🚀 TLDR: The fract-ol project is one of the three "beginner" graphical projects of the 
  		 cursus. It teaches you about using graphic library, advanced math, and more.
 
