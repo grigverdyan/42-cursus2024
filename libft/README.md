@@ -2,7 +2,7 @@
 <div align="center">
 
   <!-- Project Name -->
-  <h1>Libft Project</h1>
+  <h1>Libft</h1>
 
   <!-- Short Description -->
   <p align="center">
