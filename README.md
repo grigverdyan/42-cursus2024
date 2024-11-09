@@ -34,7 +34,7 @@
 	* Computer graphics
 	* Assembly language
 
--- among others (find below the complete [curriculum](#-42s-galaxy-curriculum)).
+Find below the complete [curriculum](#-42s-galaxy-curriculum).
 
 ### Soft-skills
 
