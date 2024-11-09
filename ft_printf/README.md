@@ -24,6 +24,8 @@
 
 > _This project is pretty straight-forward. You will implement your own printf. You will mainly learn how to use variadic arguments._
 
+For detailed information, refer to the [**subject of this project**](en.subject.pdf).
+
 	🚀 TLDR: This project consists of coding a library that contains a simplified version 
  		 of the printf function.
 
