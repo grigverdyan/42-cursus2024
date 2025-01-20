@@ -9,15 +9,21 @@ class AMateria
 {
 public:
     AMateria();
-    Amateria(const AMateria& other);
+    AMateria(const std::string& type);
 
-    std::string const & getType() const;
+    AMateria(const AMateria& other);
+    AMateria& operator=(const AMateria& other);
+
+    virtual ~AMateria();
+
+
+    const std::string& getType() const;
 
     virtual AMateria* clone() const = 0;
-    virtual void use(ICHaracter& target);
+    virtual void use(ICharacter& target);
 
 protected:
-
+    std::string type_;
 };
 
 #endif // AMATERIA_HPP
