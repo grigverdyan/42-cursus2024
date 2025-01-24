@@ -1,4 +1,5 @@
 #include "Bureaucrat.hpp"
+#include "Form.hpp"
 
 #include <iostream>
 
@@ -7,15 +8,11 @@ try
 {
     Bureaucrat b1("Popo", 3);
     Bureaucrat b2("Boho", 2);
-    Bureaucrat b3;
-    b3 = b1;
-    Bureaucrat b4 = b1;
 
-    b1.incrementGrade(1);
-    b3.incrementGrade(1);
-    b4.decrementGrade(1);
+    Form    f1("2-NDFL", 2, 3);
 
-    std::cout << b1;
+    b1.signForm(f1);
+
     return 0;
 
 }

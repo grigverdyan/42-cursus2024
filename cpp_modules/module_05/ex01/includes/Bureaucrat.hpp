@@ -5,6 +5,9 @@
 #include <exception>
 #include <ostream>
 
+// forward declaration
+class Form;
+
 class Bureaucrat
 {
 public:
@@ -21,6 +24,8 @@ public:
 
     void incrementGrade(int i);
     void decrementGrade(int i);
+
+    void signForm(Form& form);
 
 public:
     /* Exception classes */
