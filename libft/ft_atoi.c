@@ -54,9 +54,7 @@ int	ft_atoi(const char *str)
 {
 	int	sign;
 	int	i;
-	int	is_signed;
 
-	is_signed = 0;
 	sign = 1;
 	i = 0;
 	while (is_space(str[i]))
