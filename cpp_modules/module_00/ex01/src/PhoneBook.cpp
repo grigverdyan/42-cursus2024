@@ -95,6 +95,7 @@ void    PhoneBook::searchContact() const
     std::cout << "Nickname: " << contacts_[index].getNickname() << std::endl;
     std::cout << "Phone number: " << contacts_[index].getPhoneNumber() << std::endl;
     std::cout << "Darkest secret: " << contacts_[index].getDarkestSecret() << std::endl;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }
 
 bool PhoneBook::isContactIndexValid(size_t index) const

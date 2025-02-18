@@ -10,9 +10,9 @@ CYAN     		= "\033[36m"    # Cyan
 WHITE    		= "\033[37m"    # White
 
 # Target and instructions
-TARGET			= phonebook
+TARGET			= mutantStack
 CC				= c++
-CFLAGS			= -Wall -Wextra -Werror -std=c++98 -g
+CFLAGS			= -Wall -Wextra -Werror -std=c++98
 MKDIR			= mkdir -p
 RM				= rm -rf
 
