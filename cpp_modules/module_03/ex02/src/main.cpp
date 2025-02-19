@@ -17,6 +17,7 @@ int main()
 	FragC.takeDamage(2);
 	FragC.takeDamage(310);
 	FragC.attack("Blackbeak");
+	FragC.highFivesGuys();
 
 	return 0;
 }

@@ -14,7 +14,7 @@ void Harl::info()
 
 void Harl::warning()
 {
-    std::cout << "[ WARNING ]\nI think I deserve to have some extra bacon for free. I've been coming for years whereas you started working here since last month." << std::endl;
+    std::cout << "[ WARNING ]\nI think I deserve to have some extra bacon for free. \nI've been coming for years whereas you started working here since last month." << std::endl;
 }
 
 void Harl::error()
@@ -41,16 +41,17 @@ void Harl::complain(std::string level)
     {
     case 0:
         (this->*funcPtr[0])();
-        break;
+        std::cout << std::endl;
     case 1:
         (this->*funcPtr[1])();
-        break;
+        std::cout << std::endl;
     case 2:
         (this->*funcPtr[2])();
-        break;
+        std::cout << std::endl;
     case 3:
         (this->*funcPtr[3])();
-        break; 
+        std::cout << std::endl;
+        break;
     default:
         std::cerr << "[ Probably complaining about insignificant problems ]" << std::endl;
         break;

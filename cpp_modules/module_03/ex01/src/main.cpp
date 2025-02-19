@@ -16,6 +16,7 @@ int main()
 	ScavTrap ScavC = ScavA;
 	ScavC.takeDamage(20);
 	ScavC.attack("Zolanda");
+	ScavC.guardGate();
 
 	return 0;
 }

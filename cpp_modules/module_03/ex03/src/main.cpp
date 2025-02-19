@@ -1,22 +1,26 @@
-#include "FragTrap.hpp"
-
+#include "DiamondTrap.hpp"
 #include <iostream>
 
 int main()
 {
-	FragTrap FragA("Mister");
-	FragA.highFivesGuys();
-	FragA.attack("Clown");
-	FragA.takeDamage(30);
+    DiamondTrap DiamondA("DiamondOne");
+    DiamondA.takeDamage(3);
+    DiamondA.attack("Trap");
+    DiamondA.whoAmI();
+    
+    DiamondTrap DiamondB(DiamondA);
+    DiamondB.whoAmI();
+    DiamondB.attack("Shadow");
+    DiamondB.takeDamage(20);
+    
+    DiamondTrap DiamondC;
+    DiamondC = DiamondA;
+    DiamondC.whoAmI();
+    DiamondC.beRepaired(10);
 
-	FragTrap FragB(FragA);
-	FragB.beRepaired(13);
-	FragB.beRepaired(12);
+    DiamondA.takeDamage(1000);
+    DiamondA.attack("Ghost");
+    DiamondA.beRepaired(50);
 
-	FragTrap FragC = FragA;
-	FragC.takeDamage(2);
-	FragC.takeDamage(310);
-	FragC.attack("Blackbeak");
-
-	return 0;
+    return 0;
 }

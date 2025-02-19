@@ -7,7 +7,7 @@ Brain::Brain()
 {
     for (size_t i = 0; i < 100; ++i)
     {
-        ideas_[i] = "Idea #" + i;
+        ideas_[i] = "Idea #" + std::to_string(i);
     }
     std::cout << "Brain default constructor called!" << std::endl;
 }

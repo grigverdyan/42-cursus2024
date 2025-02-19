@@ -1,9 +1,10 @@
 #ifndef AMATERIA_HPP
 #define AMATERIA_HPP
 
-#include "ICharacter.hpp"
-
 #include <string>
+
+// Forward declaration
+class ICharacter;
 
 class AMateria
 {

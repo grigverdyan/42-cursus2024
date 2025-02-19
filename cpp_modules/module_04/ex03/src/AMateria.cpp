@@ -10,29 +10,22 @@ AMateria::AMateria(const std::string& type)
     : type_(type)
 {}
 
-AMateria::AMateria(const AMateria& other)
-{
-    type_ = other.type_;
-}
+AMateria::AMateria(const AMateria& /* other */)
+{}
 
-AMateria& AMateria::operator=(const AMateria& other)
+AMateria& AMateria::operator=(const AMateria& /* other */)
 {
-    if (this != &other)
-    {
-        type_ = other.type_;
-    }
     return *this;
 }
 
-AMateria::~AMateria()
-{}
+AMateria::~AMateria() {}
 
 const std::string& AMateria::getType() const
 {
     return type_;
 }
 
-void use(ICharacter& target)
+void use(ICharacter& /* target */)
 {
     std::cout << "AMateria use function call!" << std::endl;
 }

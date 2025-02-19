@@ -16,6 +16,12 @@ int main(void)
     std::cout << b << std::endl;
     
     std::cout << Fixed::max(a, b) << std::endl;
+
+    // Disabled implicit conversions
+    // std::cout << "Experiment\n\n\n";
+    // Fixed c;
+    // c = 7.13;
+    // std::cout << c.toInt();
     
     return 0;
 }

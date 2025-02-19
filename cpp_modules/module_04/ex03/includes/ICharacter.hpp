@@ -2,9 +2,7 @@
 #define ICHARACTER_HPP
 
 #include <string>
-
-// forward declaration
-class AMateria;
+#include "AMateria.hpp"
 
 class ICharacter
 {

@@ -16,12 +16,17 @@ CFLAGS			= -Wall -Wextra -Werror -std=c++98
 MKDIR			= mkdir -p
 RM				= rm -rf
 
+# Includes
+INCLUDE_DIR 	= includes
+INCLUDES		= -I$(INCLUDE_DIR)
+
 # Sources
-SRC_FILES 		= $(shell find . -name "*.cpp")
+SRC_DIR			= src
+SRC_FILES 		= $(shell find $(SRC_DIR) -name "*.cpp")
 
 # Object files
 OBJ_DIR			= objs
-OBJS 			= $(SRC_FILES:%.cpp=$(OBJ_DIR)/%.o)
+OBJS 			= $(SRC_FILES:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 
 all : $(OBJ_DIR) $(TARGET)
 
@@ -33,8 +38,8 @@ $(TARGET) : $(OBJS)
 	@$(CC) $(CFLAGS) $(OBJS) -o $(TARGET)
 	@echo $(YELLOW) "$(TARGET) created." $(RESET)
 
-$(OBJ_DIR)/%.o: %.cpp
-	@$(CC) $(CFLAGS) -c $< -o $@
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
+	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 clean :
 	@$(RM) $(OBJ_DIR)

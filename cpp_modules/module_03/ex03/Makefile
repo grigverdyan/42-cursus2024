@@ -10,9 +10,9 @@ CYAN     		= "\033[36m"    # Cyan
 WHITE    		= "\033[37m"    # White
 
 # Target and instructions
-TARGET			= fragTrap
+TARGET			= diamondTrap
 CC				= c++
-CFLAGS			= -Wall -Wextra -Werror -std=c++98
+CFLAGS			= -Wall -Wextra -Werror -std=c++98 #-Wshadow
 MKDIR			= mkdir -p
 RM				= rm -rf
 

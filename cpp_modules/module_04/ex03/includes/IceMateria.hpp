@@ -13,9 +13,7 @@ public:
     IceMateria& operator=(const IceMateria& other);
     virtual ~IceMateria();
 
-    const std::string& getType() const;
-
-    virtual AMateria* clone() const = 0;
+    virtual AMateria* clone() const;
     virtual void use(ICharacter& target);
 };
 

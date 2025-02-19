@@ -21,10 +21,11 @@ Point::~Point()
 
 Point& Point::operator=(const Point& other)
 {
-    if (this == &other)
-        return *this;
-    const_cast<Fixed&>(x_) = other.getX();
-    const_cast<Fixed&>(y_) = other.getY();
+    if (this != &other)
+    {    
+        const_cast<Fixed&>(x_) = other.getX();
+        const_cast<Fixed&>(y_) = other.getY();
+    }
     return *this;
 }
 

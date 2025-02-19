@@ -27,6 +27,7 @@ int main(int argc, char *argv[])
     if (newFile.fail())
     {
         std::cerr << "Error creating file " << argv[1] << ".replace" << std::endl;
+        file.close();
         return 1;
     }
 

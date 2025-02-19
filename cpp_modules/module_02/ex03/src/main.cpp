@@ -11,11 +11,11 @@ void test(const Point& a, const Point& b, const Point& c, const Point& point)
     << "c" << c << std::endl;
     if (bsp(a, b, c, point))
     {
-        std::cout << "\033[32mTRUE\033[0m" << "Point " << point << " is inside the triangle!\n"<< std::endl;
+        std::cout << "\033[32mTRUE\033[0m" << " Point " << point << " is inside the triangle!\n"<< std::endl;
     }
     else
     {
-        std::cout << "\033[31mFALSE\033[0m" << "Point " << point << " is not inside the triangle!\n"<< std::endl;
+        std::cout << "\033[31mFALSE\033[0m" << " Point " << point << " is not inside the triangle!\n"<< std::endl;
     }
     std::cout << "\n---------------------------------------------------------------------\n" << std::endl;
 }
@@ -35,6 +35,14 @@ int main(void)
         Point b(2.5, 2.5);
         Point c(-1, -2);
         Point point(8.5, -9);
+
+        test(a, b, c, point);
+    }
+    {
+        const Point a;
+        const Point b(10, 0);
+        const Point c(0, 10);
+        const Point point(1, 0);
 
         test(a, b, c, point);
     }
