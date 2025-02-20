@@ -110,7 +110,7 @@ void Character::equip(AMateria* m)
 
 void Character::use(int idx, ICharacter& target)
 {
-    if (slots_[idx])
+    if (idx >= 0 && idx < static_cast<int>(slotCount_) && slots_[idx])
     {
         slots_[idx]->use(target);
     }

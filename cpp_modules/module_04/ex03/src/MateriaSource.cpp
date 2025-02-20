@@ -2,7 +2,13 @@
 #include "Ice.hpp"
 #include "Cure.hpp"
 
-MateriaSource::MateriaSource() {}
+MateriaSource::MateriaSource() 
+{
+    // for (size_t i = 0; i < materiaCount_; ++i)
+    // {
+    //     materias_[i] = NULL;
+    // }
+}
 
 MateriaSource::~MateriaSource() 
 {
@@ -101,6 +107,7 @@ AMateria* MateriaSource::createMateria(std::string const& type)
         if (materias_[i] && materias_[i]->getType() == type)
         {
             newMateria = materias_[i];
+            // return materias_[i];
         }
     }
     return newMateria;

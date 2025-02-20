@@ -19,7 +19,7 @@ public:
 
 private:
     static const size_t slotCount_= 4;
-    AMateria* slots_[4];
+    AMateria* slots_[slotCount_];
     std::string name_;
 };
 
