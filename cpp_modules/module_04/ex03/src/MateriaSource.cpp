@@ -1,6 +1,6 @@
 #include "MateriaSource.hpp"
-#include "IceMateria.hpp"
-#include "CureMateria.hpp"
+#include "Ice.hpp"
+#include "Cure.hpp"
 
 MateriaSource::MateriaSource() {}
 
@@ -29,11 +29,19 @@ MateriaSource::MateriaSource(const MateriaSource& other)
     {
         if (materias_[i]->getType() == "ice")
         {
-            materias_[i] = new IceMateria(other.materias_[i]);        
+            Ice* iceMateria = dynamic_cast<Ice*>(other.materias_[i]);
+            if (iceMateria)
+            {
+                materias_[i] = new Ice(*iceMateria);
+            }
         }
         else if (materias_[i]->getType() == "cure")
         {
-            materias_[i] = new IceMateria(other.materias_[i]);        
+            Cure* cureMateria = dynamic_cast<Cure*>(other.materias_[i]);
+            if (cureMateria)
+            {
+                materias_[i] = new Cure(*cureMateria);
+            }            
         }
     }
 }
@@ -54,11 +62,19 @@ MateriaSource& MateriaSource::operator=(const MateriaSource& other)
         {
             if (materias_[i]->getType() == "ice")
             {
-                materias_[i] = new IceMateria(other.materias_[i]);        
+                Ice* iceMateria = dynamic_cast<Ice*>(other.materias_[i]);
+                if (iceMateria)
+                {
+                    materias_[i] = new Ice(*iceMateria);
+                }
             }
             else if (materias_[i]->getType() == "cure")
             {
-                materias_[i] = new IceMateria(other.materias_[i]);        
+                Cure* cureMateria = dynamic_cast<Cure*>(other.materias_[i]);
+                if (cureMateria)
+                {
+                    materias_[i] = new Cure(*cureMateria);
+                }            
             }
         }
     }
@@ -80,9 +96,9 @@ void MateriaSource::learnMateria(AMateria* m)
 AMateria* MateriaSource::createMateria(std::string const& type)
 {
     AMateria* newMateria = NULL;
-    for (size_t i = materiaCount_ - 1; i >= 0; --i)
+    for (size_t i = materiaCount_ - 1; i != 0; --i)
     {
-        if (materias_[i] && materias_[i].getType() == type)
+        if (materias_[i] && materias_[i]->getType() == type)
         {
             newMateria = materias_[i];
         }

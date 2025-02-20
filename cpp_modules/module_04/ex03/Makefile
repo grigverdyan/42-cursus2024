@@ -10,7 +10,7 @@ CYAN     		= "\033[36m"    # Cyan
 WHITE    		= "\033[37m"    # White
 
 # Target and instructions
-TARGET			= animal
+TARGET			= materia
 CC				= c++
 CFLAGS			= -Wall -Wextra -Werror -std=c++98
 MKDIR			= mkdir -p

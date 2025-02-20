@@ -1,6 +1,6 @@
 #include "Character.hpp"
-#include "IceMateria.hpp"
-#include "CureMateria.hpp"
+#include "Ice.hpp"
+#include "Cure.hpp"
 
 Character::Character()
     : ICharacter()
@@ -37,11 +37,19 @@ Character::Character(const Character& other)
     {
         if (slots_[i]->getType() == "ice")
         {
-            slots_[i] = new IceMateria(other.slots_[i]);           
+            Ice* iceMateria = dynamic_cast<Ice*>(other.slots_[i]);
+            if (iceMateria)
+            {
+                slots_[i] = new Ice(*iceMateria);
+            }
         }
         else if (slots_[i]->getType() == "cure")
         {
-            slots_[i] = new CureMateria(other.slots_[i]);
+            Cure* cureMateria = dynamic_cast<Cure*>(other.slots_[i]);
+            if (cureMateria)
+            {
+                slots_[i] = new Cure(*cureMateria);
+            }            
         }
     }
 }
@@ -62,11 +70,19 @@ Character& Character::operator=(const Character& other)
         {
             if (slots_[i]->getType() == "ice")
             {
-                slots_[i] = new IceMateria(other.slots_[i]);           
+                Ice* iceMateria = dynamic_cast<Ice*>(other.slots_[i]);
+                if (iceMateria)
+                {
+                    slots_[i] = new Ice(*iceMateria);
+                }
             }
             else if (slots_[i]->getType() == "cure")
             {
-                slots_[i] = new CureMateria(other.slots_[i]);
+                Cure* cureMateria = dynamic_cast<Cure*>(other.slots_[i]);
+                if (cureMateria)
+                {
+                    slots_[i] = new Cure(*cureMateria);
+                }            
             }
         }
     }
