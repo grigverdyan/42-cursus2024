@@ -9,11 +9,13 @@ DiamondTrap::DiamondTrap()
 }
 
 DiamondTrap::DiamondTrap(const std::string& name)
-    : ClapTrap(name + "_clap_name"), ScavTrap(), FragTrap()
+    : ClapTrap(name + "_clap_name")
+    , ScavTrap(name)
+    , FragTrap(name)
+    , name_(name)
 {
-    this->name_ = name;
     hitPoints_ = FragTrap::hitPoints_;
-    energyPoints_ = ScavTrap::energyPoints_;
+    energyPoints_ = ScavTrap::initialEnergyPoints;
     attackDamage_ = FragTrap::attackDamage_;
     std::cout << "DiamondTrap " << this->name_ << " has entered the battlefield!" << std::endl;
 }

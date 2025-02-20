@@ -15,6 +15,8 @@ public:
     void guardGate();
     void attack(const std::string &target);
 
+protected:
+    static const unsigned int initialEnergyPoints = 50;
 };
 
 #endif // SCAVTRAP_HPP

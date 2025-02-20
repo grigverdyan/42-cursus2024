@@ -4,6 +4,9 @@
 int main()
 {
     DiamondTrap DiamondA("DiamondOne");
+    std::cout << "DiamondTrap's attackDamage: " << DiamondA.getAttackDamage() << std::endl;
+    std::cout << "DiamondTrap's energy Points: " << DiamondA.getEnergyPoints() << std::endl;
+    std::cout << "DiamondTrap's hit Points: " << DiamondA.getHitPoints() << std::endl;
     DiamondA.takeDamage(3);
     DiamondA.attack("Trap");
     DiamondA.whoAmI();
