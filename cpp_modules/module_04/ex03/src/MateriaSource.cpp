@@ -2,12 +2,14 @@
 #include "Ice.hpp"
 #include "Cure.hpp"
 
+#include <iostream>
+
 MateriaSource::MateriaSource() 
 {
-    // for (size_t i = 0; i < materiaCount_; ++i)
-    // {
-    //     materias_[i] = NULL;
-    // }
+    for (size_t i = 0; i < materiaCount_; ++i)
+    {
+        materias_[i] = NULL;
+    }
 }
 
 MateriaSource::~MateriaSource() 
@@ -17,38 +19,21 @@ MateriaSource::~MateriaSource()
         if (materias_[i])
         {
             delete materias_[i];
+            materias_[i] = NULL;
         }
     }
 }
 
-MateriaSource::MateriaSource(const MateriaSource& other) 
+MateriaSource::MateriaSource(const MateriaSource& other)
 {
     for (size_t i = 0; i < materiaCount_; ++i)
     {
-        if (materias_[i])
+        if (other.materias_[i] == NULL)
         {
-            delete materias_[i];
+            materias_[i] = NULL;
+            continue;
         }
-    }
-
-    for (size_t i = 0; i < materiaCount_; ++i)
-    {
-        if (materias_[i]->getType() == "ice")
-        {
-            Ice* iceMateria = dynamic_cast<Ice*>(other.materias_[i]);
-            if (iceMateria)
-            {
-                materias_[i] = new Ice(*iceMateria);
-            }
-        }
-        else if (materias_[i]->getType() == "cure")
-        {
-            Cure* cureMateria = dynamic_cast<Cure*>(other.materias_[i]);
-            if (cureMateria)
-            {
-                materias_[i] = new Cure(*cureMateria);
-            }            
-        }
+        materias_[i] = other.materias_[i]->clone();
     }
 }
 
@@ -61,27 +46,18 @@ MateriaSource& MateriaSource::operator=(const MateriaSource& other)
             if (materias_[i])
             {
                 delete materias_[i];
+                materias_[i] = NULL;
             }
         }
 
         for (size_t i = 0; i < materiaCount_; ++i)
         {
-            if (materias_[i]->getType() == "ice")
+            if (other.materias_[i] == NULL)
             {
-                Ice* iceMateria = dynamic_cast<Ice*>(other.materias_[i]);
-                if (iceMateria)
-                {
-                    materias_[i] = new Ice(*iceMateria);
-                }
+                materias_[i] = NULL;
+                continue;
             }
-            else if (materias_[i]->getType() == "cure")
-            {
-                Cure* cureMateria = dynamic_cast<Cure*>(other.materias_[i]);
-                if (cureMateria)
-                {
-                    materias_[i] = new Cure(*cureMateria);
-                }            
-            }
+            materias_[i] = other.materias_[i]->clone();
         }
     }
     return *this;
@@ -89,26 +65,32 @@ MateriaSource& MateriaSource::operator=(const MateriaSource& other)
 
 void MateriaSource::learnMateria(AMateria* m)
 {
+    bool isFull = true;
     for (size_t i = 0; i < materiaCount_; ++i)
     {
         if (!materias_[i])
         {
+            isFull = false;
             materias_[i] = m;
-            break;
+            return;
         }
+    }
+    if (isFull)
+    {
+        std::cout << "MateriaSource is full!" << std::endl;
     }
 }
 
 AMateria* MateriaSource::createMateria(std::string const& type)
 {
-    AMateria* newMateria = NULL;
-    for (size_t i = materiaCount_ - 1; i != 0; --i)
+    for (int i = static_cast<int>(materiaCount_) - 1; i >= 0; --i)
     {
         if (materias_[i] && materias_[i]->getType() == type)
         {
-            newMateria = materias_[i];
-            // return materias_[i];
+            return materias_[i]->clone();
         }
     }
-    return newMateria;
+
+    std::cout << "Materia not found!" << std::endl;
+    return NULL;
 }
