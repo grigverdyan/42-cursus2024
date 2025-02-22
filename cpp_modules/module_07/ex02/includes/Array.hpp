@@ -62,7 +62,8 @@ public:
 
     T& operator[](size_t index)
 	{
-        if (index >= len_) {
+        if (index >= len_) 
+        {
             throw OutOfBoundsException();
         }
         return data_[index];
@@ -70,7 +71,8 @@ public:
 
     const T& operator[](size_t index) const
 	{
-        if (index >= len_) {
+        if (index >= len_) 
+        {
             throw OutOfBoundsException();
         }
         return data_[index];

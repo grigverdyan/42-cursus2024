@@ -7,16 +7,6 @@
 class Span
 {
 public:
-	struct SpanIsFullException : public std::exception
-	{
-		virtual const char* what() const throw();
-	};
-
-	struct RangeTooSmallException : public std::exception
-	{
-		virtual const char* what() const throw();
-	};
-
 	Span();
     Span(unsigned int N);
     ~Span();
@@ -38,6 +28,17 @@ public:
         }
         numbers_.insert(numbers_.end(), begin, end);
 	}
+	
+public:
+	struct SpanIsFullException : public std::exception
+	{
+		virtual const char* what() const throw();
+	};
+
+	struct RangeTooSmallException : public std::exception
+	{
+		virtual const char* what() const throw();
+	};
 
 private:
     unsigned int        N_;

@@ -5,7 +5,7 @@
 #include "easyfind.hpp"
 
 template <typename Cont>
-void ContainerCheck(Cont &container, int value)
+void ContainerCheck(Cont& container, int value)
 {
     try
     {
