@@ -74,7 +74,6 @@ void AForm::beSigned(const Bureaucrat& bureaucrat)
     if (signGrade_ >= bureaucrat.getGrade())
     {
         isSigned_ = true;
-        std::cout << "Bureaucrat " << bureaucrat.getName() << " signed form " << name_ << std::endl;
     }
     else
     {

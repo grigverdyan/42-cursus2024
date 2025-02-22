@@ -36,7 +36,8 @@ try
 	std::cout << "------------------------------------" << std::endl;
 
 	form = bob.makeForm("shrubbery creation", "Fred");
-	form->beSigned(karen);
+	// form->beSigned(karen);
+	karen.signForm(*form);
 	karen.executeForm(*form);
 	delete form;
 
@@ -46,6 +47,11 @@ try
 	karen.signForm(*form);
 	karen.executeForm(*form);
 
+	/* Increment Karen's grade and execute form again */
+	karen.incrementGrade(47);
+	karen.executeForm(*form);
+
+
 	delete form;
         
 	return 0;
@@ -53,5 +59,5 @@ try
 }
 catch (std::exception &e)
 {
-        std::cerr << e.what() << std::endl;
+    std::cerr << e.what() << std::endl;
 }

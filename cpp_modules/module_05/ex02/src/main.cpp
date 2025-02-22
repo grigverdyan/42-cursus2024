@@ -28,6 +28,10 @@ int main()
                 steve.executeForm(shrubbery);
                 mike.executeForm(robotomy);
                 mike.executeForm(pardon);
+
+                /* Increment grade and try to pardon again */
+                mike.incrementGrade(149);
+                mike.executeForm(pardon);
 	}
         catch (std::exception &e)
         {

@@ -32,7 +32,6 @@ AForm* Intern::makeForm(const std::string& formName, const std::string& target)
     };
 
     const FormCreators forms[] = {
-    // AForm* (Intern::*FormCreators[])(const std::string&) = {
         &Intern::createShrubberyCreationForm,
         &Intern::createRobotomyRequestForm,
         &Intern::createPresidentialPardonForm
