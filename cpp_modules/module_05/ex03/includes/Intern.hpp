@@ -14,10 +14,9 @@ public:
     AForm* makeForm(const std::string& formName, const std::string& target);
 
 private:
-    AForm*	makeShrubberyCreationForm(const std::string) const;
-	AForm*	makePresidentialPardonForm(const std::string) const;
-	AForm*	makeRobotomyRequestForm(const std::string) const;
-	int		getFormInex(const std::string formName) const;
+    AForm*	createShrubberyCreationForm(const std::string& target) const;
+	AForm*	createPresidentialPardonForm(const std::string& target) const;
+	AForm*	createRobotomyRequestForm(const std::string& target) const;
 
 public:
     struct	UndefinedForm: public std::exception
@@ -26,6 +25,6 @@ public:
     };
 };
 
-typedef	AForm*(Intern::*FormMakers)(std::string) const;
+typedef	AForm*(Intern::*FormCreators)(const std::string& ) const;
 
 #endif // INTERN_HPP
