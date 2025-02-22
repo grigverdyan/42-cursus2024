@@ -19,8 +19,8 @@ public:
     const std::string& getName() const;
     int getGrade() const;
 
-    void incrementGrade(int i);
-    void decrementGrade(int i);
+    void incrementGrade(int i = 1);
+    void decrementGrade(int i = 1);
 
 public:
     /* Exception classes */

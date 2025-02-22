@@ -1,27 +1,27 @@
-#include "Form.hpp"
+#include "AForm.hpp"
 #include "Bureaucrat.hpp"
 
 #include <iostream>
 #include <string>
 
-Form::Form()
+AForm::AForm()
     : name_("Default")
     , isSigned_(false)
     , signGrade_()
     , execGrade_()
 {}
 
-Form::~Form()
+AForm::~AForm()
 {}
 
-Form::Form(const std::string& name, int signGrade, int execGrade)
+AForm::AForm(const std::string& name, int signGrade, int execGrade)
     : name_(name)
     , isSigned_(false)
     , signGrade_(signGrade)
     , execGrade_(execGrade)
 {}
 
-Form::Form(const Form& other)
+AForm::AForm(const AForm& other)
     : name_(other.name_)
     , isSigned_(other.isSigned_)
     , signGrade_(other.signGrade_)
@@ -37,7 +37,7 @@ Form::Form(const Form& other)
     }
 }
 
-Form& Form::operator=(const Form& other)
+AForm& AForm::operator=(const AForm& other)
 {
     if (this != &other)
     {
@@ -49,27 +49,27 @@ Form& Form::operator=(const Form& other)
     return *this;
 }
 
-std::string Form::getName() const
+std::string AForm::getName() const
 {
     return name_;
 }
 
-bool Form::getIsSigned() const
+bool AForm::getIsSigned() const
 {
     return isSigned_;
 }
 
-int Form::getSignGrade() const 
+int AForm::getSignGrade() const 
 {
     return signGrade_;
 }
 
-int Form::getExecGrade() const 
+int AForm::getExecGrade() const 
 {
     return execGrade_;
 }
 
-void Form::beSigned(const Bureaucrat& bureaucrat)
+void AForm::beSigned(const Bureaucrat& bureaucrat)
 {
     if (signGrade_ >= bureaucrat.getGrade())
     {
@@ -82,17 +82,29 @@ void Form::beSigned(const Bureaucrat& bureaucrat)
     }
 }
 
-const char* Form::GradeTooHighException::what() const throw()
+const char* AForm::GradeTooHighException::what() const throw()
 {
     return "Form's grade is too high!";
 }
 
-const char* Form::GradeTooLowException::what() const throw()
+const char* AForm::GradeTooLowException::what() const throw()
 {
     return "Form's grade is too low!";
 }
 
-std::ostream& operator<<(std::ostream& os, const Form& form)
+void AForm::execute(const Bureaucrat& executor) const
+{
+    if (isSigned_)
+    {
+        throw std::runtime_error("Form is already signed!");
+    }
+    if (execGrade_ < executor.getGrade())
+    {
+        throw GradeTooLowException();
+    }
+}
+
+std::ostream& operator<<(std::ostream& os, const AForm& form)
 {
     os << "Form: " << form.getName() << std::endl
        << "Signed grade: " << form.getSignGrade() << std::endl

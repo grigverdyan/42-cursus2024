@@ -1,10 +1,11 @@
 #ifndef FORM_HPP
 #define FORM_HPP
 
-#include "Bureaucrat.hpp"
-
 #include <string>
 #include <ostream>
+
+// forward declaration
+class Bureaucrat;
 
 class Form
 {
