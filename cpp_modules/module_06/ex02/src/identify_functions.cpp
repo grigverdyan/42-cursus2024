@@ -24,7 +24,10 @@ void identify(Base& p)
         (void)c;
         std::cout << "The pointer is of type C." << std::endl;
     }
-    catch (const std::exception&) {}
+    catch (const std::exception& e) 
+    {
+        std::cerr << e.what() << std::endl;
+    }
 }
 
 void identify(Base* p)

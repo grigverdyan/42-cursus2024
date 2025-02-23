@@ -21,7 +21,7 @@ void ScalarConverter::convert(const std::string& literal)
 	{
 		if (literal.length() == 1)
 			castToChar(literal);
-		else if (literal == "-inf" || literal == "-inff" || literal == "+inf" || literal == "+inff")
+		else if (literal == "-inf" || literal == "-inff" || literal == "inf" || literal == "+inf" || literal == "+inff")
 			inf(literal);
 		else if (literal == "nan" || literal == "nanf")
 			nan();
@@ -142,7 +142,14 @@ void ScalarConverter::castToFloat(const std::string& literal)
 	{	
         std::cout << "char: '" << static_cast<char>(num) << "'" << std::endl;
     }
-    std::cout << "int: " << static_cast<int>(num) << std::endl;
+	if (num > INT_MAX || num < INT_MIN)
+	{
+		std::cout << "int: impossible" << std::endl;
+	}
+	else
+	{
+    	std::cout << "int: " << static_cast<int>(num) << std::endl;
+	}
 	std::cout << "float: " << std::fixed << std::setprecision(1) << num << "f" << std::endl;
 	std::cout << "double: " << std::fixed << std::setprecision(1) << static_cast<double>(num) << std::endl;
 }
@@ -163,7 +170,15 @@ void ScalarConverter::castToDouble(const std::string& literal)
 	{
         std::cout << "char: " << static_cast<char>(num) << std::endl;
     }
-    std::cout << "int: " << static_cast<int>(num) << std::endl;
+
+	if (num > INT_MAX || num < INT_MIN)
+	{
+		std::cout << "int: impossible" << std::endl;
+	}
+	else
+	{
+    	std::cout << "int: " << static_cast<int>(num) << std::endl;
+	}	
 	std::cout << "float: " << std::fixed << std::setprecision(1) << static_cast<float>(num) << "f" << std::endl;
-	std::cout << "float: " << std::fixed << std::setprecision(1) << num << std::endl;
+	std::cout << "double: " << std::fixed << std::setprecision(1) << num << std::endl;
 }
