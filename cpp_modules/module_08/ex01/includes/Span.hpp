@@ -14,6 +14,8 @@ public:
     Span& operator=(const Span& other);
 	
     void addNumber(int number);
+	void printSpan() const;
+	void fillSpan(unsigned int size);
     unsigned int shortestSpan() const;
     unsigned int longestSpan() const;
 

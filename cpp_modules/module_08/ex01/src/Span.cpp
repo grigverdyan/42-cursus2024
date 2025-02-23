@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <climits>
 #include <iterator>
+#include <iostream>
 
 #include "Span.hpp"
 
@@ -37,6 +38,23 @@ Span& Span::operator=(const Span& other)
         numbers_ = other.numbers_;
     }
     return *this;
+}
+
+void Span::printSpan() const
+{
+    for (size_t i = 0; i < numbers_.size(); ++i)
+    {
+        std::cout << numbers_[i] << " ";
+    }
+    std::cout << std::endl;
+}
+
+void Span::fillSpan(unsigned int size)
+{
+    for (size_t i = 0; i < size; ++i)
+    {
+        addNumber(std::rand() % 10000);
+    }
 }
 
 void Span::addNumber(int number)
