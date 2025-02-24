@@ -14,10 +14,13 @@ private:
     ScalarConverter& operator=(const ScalarConverter& rhs);
     ~ScalarConverter();
 
+    static void castNumber(long double number);
+
+
     static void castToChar(const std::string& literal);
-    static void castToInt(const std::string& literal);
-    static void castToFloat(const std::string& literal);
-    static void castToDouble(const std::string& literal);
+    // static void castToInt(const std::string& literal);
+    // static void castToFloat(const std::string& literal);
+    // static void castToDouble(const std::string& literal);
 
     static void inf(const std::string& literal);
     static void nan();

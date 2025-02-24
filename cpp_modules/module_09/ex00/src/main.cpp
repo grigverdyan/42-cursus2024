@@ -4,13 +4,18 @@
 
 int main(int argc, char* argv[])
 {
-    if (argc != 3) {
-        std::cerr << "Usage: " << argv[0] << " <input_file> <database_file.csv>" << std::endl;
+    if (argc < 2 || argc > 3) 
+    {
+        std::cerr << "Usage: " << argv[0] << " <input_file> [<database_file.csv>]" << std::endl;
         return 1;
     }
 
     std::string inputFile = argv[1];
-    std::string dbFile = argv[2];
+    std::string dbFile = "data.csv";
+    if (argc != 2)
+    {
+        dbFile = argv[2];
+    }
 
     if (dbFile.substr(dbFile.find_last_of(".") + 1) != "csv") 
     {

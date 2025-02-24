@@ -5,18 +5,15 @@
 
 int main(int argc, char *argv[]) 
 {
-    std::string input;
-
     if (argc != 2)
     {
         std::cerr << "Usage: ./RPN \"polish notation\"" << std::endl;
         return 1;
     }
 
-    input = argv[1];
     try 
     {
-        RPN rpn(input);
+        RPN rpn(argv[1]);
         float result = rpn.calculate();
         std::cout << result << std::endl;
     }

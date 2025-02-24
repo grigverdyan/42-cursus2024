@@ -20,68 +20,137 @@ void ScalarConverter::convert(const std::string& literal)
 	if (std::isprint(literal[0]) && !std::isdigit(literal[0]))
 	{
 		if (literal.length() == 1)
+		{
 			castToChar(literal);
+		}
 		else if (literal == "-inf" || literal == "-inff" 
-					|| literal == "+inf" || literal == "+inff"
-					|| literal == "inf" || literal == "inff")
+				|| literal == "+inf" || literal == "+inff"
+				|| literal == "inf" || literal == "inff")
+		{
 			inf(literal);
+		}	
 		else if (literal == "nan" || literal == "nanf")
+		{
 			nan();
+		}	
 		else
+		{
 			allImpossible();
+		}
 	}
 	else if (literal[literal.length() - 1] == 'f')
 	{
 		unsigned long int i = 0;
 		while (i < literal.length() - 1 && (std::isdigit(literal[i]) || literal[i] == '.'))
+		{
 			++i;
+		}	
 		if (i == literal.length() - 1)
-			castToFloat(literal);
+		{
+			castNumber(atof(literal.c_str()));
+		}	
 		else
+		{
 			allImpossible();
+		}
 	}
 	else if (literal.find('.') != std::string::npos)
 	{
 		unsigned long int i = 0;
 		while (std::isdigit(literal[i]) || literal[i] == '.')
+		{
 			++i;
+		}	
 		if (i == literal.length())
-			castToDouble(literal);
+		{
+			castNumber(atol(literal.c_str()));
+		}	
 		else
+		{
 			allImpossible();
+		}	
 	}
 	else if (std::isdigit(literal[0]))
 	{
 		unsigned long int i = 0;
 		while (std::isdigit(literal[i]))
+		{
 			++i;
+		}	
 		if (i == literal.length())
-			castToInt(literal);
+		{
+			castNumber(atol(literal.c_str()));
+		}
 		else
+		{
 			allImpossible();
+		}	
 	}
 	else
+	{
 		allImpossible();
+	}
 }
 
+void ScalarConverter::castNumber(long double num)
+{
+	if (num < 0 || num > 127)
+	{
+		std::cout << "char: impossible" << std::endl;
+	}
+	else if (num < 32 || num == 127)
+    {
+		std::cout << "char: Non displayable" << std::endl;
+    }
+    else
+	{
+      	std::cout << "char: " << static_cast<char>(num) << std::endl;
+    }
 
+	if (num > std::numeric_limits<int>::max() || num < std::numeric_limits<int>::min())
+	{
+		std::cout << "int: impossible" << std::endl;
+	}
+	else
+	{
+    	std::cout << "int: " << static_cast<int>(num) << std::endl;
+	}
+
+	if (num > std::numeric_limits<float>::max() || num < std::numeric_limits<float>::min())
+	{
+		std::cout << "float: impossible" << std::endl;
+	}
+	else
+	{
+    	std::cout << "float: " << std::fixed << std::setprecision(1) << static_cast<float>(num) << "f" << std::endl;
+	}
+
+	if (num > std::numeric_limits<double>::max() || num < std::numeric_limits<double>::min())
+	{
+		std::cout << "double: impossible" << std::endl;
+	}
+	else
+	{
+    	std::cout << "double: " << std::fixed << std::setprecision(1) << static_cast<double>(num) << std::endl;
+	}
+}
 
 
 void ScalarConverter::inf(const std::string& literal)
 {
+	std::cout << "char: impossible" << std::endl;
+
 	if (literal == "-inf" || literal == "-inff") 
     {
-		std::cout << "char: impossible" << std::endl;
-		std::cout << "int: " << INT_MIN << std::endl;
-		std::cout << "float: " << FLT_MIN << std::endl;
-		std::cout << "double: " << DBL_MIN << std::endl;
+		std::cout << "int: " << std::numeric_limits<int>::min() << std::endl;
+		std::cout << "float: " << std::numeric_limits<float>::min() << std::endl;
+		std::cout << "double: " << std::numeric_limits<double>::min() << std::endl;
 	}
     else
     {
-		std::cout << "char: impossible" << std::endl;
-		std::cout << "int: " << INT_MAX << std::endl;
-		std::cout << "float: " << FLT_MAX << std::endl;
-		std::cout << "double: " << DBL_MAX << std::endl;
+		std::cout << "int: " << std::numeric_limits<int>::max() << std::endl;
+		std::cout << "float: " << std::numeric_limits<float>::max() << std::endl;
+		std::cout << "double: " << std::numeric_limits<double>::max() << std::endl;
 	}
 }
 
@@ -109,86 +178,95 @@ void ScalarConverter::castToChar(const std::string& literal)
 	std::cout << "double: " << std::fixed << std::setprecision(1) << static_cast<double>(literal[0]) << std::endl;
 }
 
-void ScalarConverter::castToInt(const std::string& literal)
-{
-	long long	num = atol(literal.c_str());
+// void ScalarConverter::castToInt(const std::string& literal)
+// {
+// 	long long	num = atol(literal.c_str());
 
-	if (num < 0 || num > 127)
-		std::cout << "char: impossible" << std::endl;
-	else if (num < 32 || num == 127)
-    {
-		std::cout << "char: Non displayable" << std::endl;
-    }
-    else
-	{
-      	std::cout << "char: " << static_cast<char>(num) << std::endl;
-    }
+// 	if (num < 0 || num > 127)
+// 	{
+// 		std::cout << "char: impossible" << std::endl;
+// 	}
+// 	else if (num < 32 || num == 127)
+//     {
+// 		std::cout << "char: Non displayable" << std::endl;
+//     }
+//     else
+// 	{
+//       	std::cout << "char: " << static_cast<char>(num) << std::endl;
+//     }
 
-	if (num > INT_MAX || num < INT_MIN)
-	{
-		std::cout << "int: impossible" << std::endl;
-	}
-	else
-	{
-    	std::cout << "int: " << static_cast<int>(num) << std::endl;
-	}	
-	std::cout << "float: " << std::fixed << std::setprecision(1) << static_cast<float>(num) << "f" << std::endl;
-	std::cout << "double: " << std::fixed << std::setprecision(1) << static_cast<double>(num) << std::endl;
-}
+// 	if (num > std::numeric_limits<int>::max() || num < std::numeric_limits<int>::min())
+// 	{
+// 		std::cout << "int: impossible" << std::endl;
+// 	}
+// 	else
+// 	{
+//     	std::cout << "int: " << static_cast<int>(num) << std::endl;
+// 	}	
+// 	std::cout << "float: " << std::fixed << std::setprecision(1) << static_cast<float>(num) << "f" << std::endl;
+// 	std::cout << "double: " << std::fixed << std::setprecision(1) << static_cast<double>(num) << std::endl;
+// }
 
-void ScalarConverter::castToFloat(const std::string& literal)
-{
-	float num = atof(literal.c_str());
+// void ScalarConverter::castToFloat(const std::string& literal)
+// {
+// 	float num = atof(literal.c_str());
 
-	if (num < 0 || num > 127)
-	{	
-        std::cout << "char: impossible" << std::endl;
-    }
-    else if (num < 32 || num == 127)
-	{
-        std::cout << "char: non-displayable" << std::endl;
-    }
-    else
-	{	
-        std::cout << "char: '" << static_cast<char>(num) << "'" << std::endl;
-    }
-	if (num > INT_MAX || num < INT_MIN)
-	{
-		std::cout << "int: impossible" << std::endl;
-	}
-	else
-	{
-    	std::cout << "int: " << static_cast<int>(num) << std::endl;
-	}
-	std::cout << "float: " << std::fixed << std::setprecision(1) << num << "f" << std::endl;
-	std::cout << "double: " << std::fixed << std::setprecision(1) << static_cast<double>(num) << std::endl;
-}
+// 	if (num < 0 || num > 127)
+// 	{	
+//         std::cout << "char: impossible" << std::endl;
+//     }
+//     else if (num < 32 || num == 127)
+// 	{
+//         std::cout << "char: non-displayable" << std::endl;
+//     }
+//     else
+// 	{	
+//         std::cout << "char: '" << static_cast<char>(num) << "'" << std::endl;
+//     }
+// 	if (num > std::numeric_limits<int>::max() || num < std::numeric_limits<int>::min())
+// 	{
+// 		std::cout << "int: impossible" << std::endl;
+// 	}
+// 	else
+// 	{
+//     	std::cout << "int: " << static_cast<int>(num) << std::endl;
+// 	}
+// 	std::cout << "float: " << std::fixed << std::setprecision(1) << num << "f" << std::endl;
+// 	std::cout << "double: " << std::fixed << std::setprecision(1) << static_cast<double>(num) << std::endl;
+// }
 
-void ScalarConverter::castToDouble(const std::string& literal)
-{
-	double num = atof(literal.c_str());
+// void ScalarConverter::castToDouble(const std::string& literal)
+// {
+// 	double num = atof(literal.c_str());
 
-	if (num < 0 || num > 127)
-	{	
-        std::cout << "char: impossible" << std::endl;
-    }
-    else if (num < 32 || num == 127)
-	{
-        std::cout << "char: non-displayable" << std::endl;
-    }
-    else
-	{
-        std::cout << "char: " << static_cast<char>(num) << std::endl;
-    }
+// 	if (num < 0 || num > 127)
+// 	{	
+//         std::cout << "char: impossible" << std::endl;
+//     }
+//     else if (num < 32 || num == 127)
+// 	{
+//         std::cout << "char: non-displayable" << std::endl;
+//     }
+//     else
+// 	{
+//         std::cout << "char: " << static_cast<char>(num) << std::endl;
+//     }
 
-	if (num > INT_MAX || num < INT_MIN)
-	{
-		std::cout << "int: impossible" << std::endl;
-	}
-	else
-	{
-    	std::cout << "int: " << static_cast<int>(num) << std::endl;
-	}	
-	std::cout << "float: " << std::fixed << std::setprecision(1) << static_cast<float>(num) << "f" << std::endl;
-	std::cout << "double: " << std::fixed << std::setprecision(1) << num << std::endl;
-}
+// 	if (num > std::numeric_limits<int>::max() || num < std::numeric_limits<int>::min())
+// 	{
+// 		std::cout << "int: impossible" << std::endl;
+// 	}
+// 	else
+// 	{
+//     	std::cout << "int: " << static_cast<int>(num) << std::endl;
+// 	}	
+// 	std::cout << "float: " << std::fixed << std::setprecision(1) << static_cast<float>(num) << "f" << std::endl;
+// 	if (num > std::numeric_limits<double>::max() || num < std::numeric_limits<double>::min())
+// 	{
+// 		std::cout << "double: impossible" << std::endl;
+// 	}
+// 	else
+// 	{
+// 		std::cout << "double: " << std::fixed << std::setprecision(1) << num << std::endl;
+// 	}
+// }
