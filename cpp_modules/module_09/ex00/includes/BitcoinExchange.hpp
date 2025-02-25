@@ -4,6 +4,7 @@
 #include <map>
 #include <string>
 #include <sstream>
+#include <iostream>
 
 // Type Specialization at compile-time
 template<typename T>
@@ -62,11 +63,16 @@ private:
         {
             throw std::runtime_error("Invalid " + std::string(TypePrinter<T>::getType()) + " format in the input file!");
         }
+        if (num < 0 || num > 1000)
+        {
+            std::cerr << "Error: not a positive number of [0, 1000] range." << std::endl;
+            num = 0;
+        }
         return num;
     }
 
     bool validateDate(const std::string& date);
-    Bitcoin BitcoinExchange::extractDateValue(const std::string& line);
+    Bitcoin extractDateValue(const std::string& line);
 
 private:
     std::map<std::string, ExchangeRate> data_;

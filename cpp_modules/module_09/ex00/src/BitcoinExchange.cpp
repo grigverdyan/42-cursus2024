@@ -82,7 +82,7 @@ Bitcoin BitcoinExchange::extractDateValue(const std::string& line)
     std::cout << date << " " << value << std::endl;
     if (!validateDate(date))
     {
-        std::cerr << "Error: Invalid date format in file " << inputFile << std::endl;
+        std::cerr << "Error: Invalid date format in file " << date << std::endl;
         bc.date = "";
     }
     else
@@ -107,14 +107,10 @@ Bitcoin BitcoinExchange::extractDateValue(const std::string& line)
     catch (std::exception& e)
     {
         std::cerr << "Error: " << e.what();
-        return BitcoinRate(date, 0); 
+        bc.rateType = Bitcoin::INT;
+        bc.rate.i = 0;
+        return bc; 
     }
-
-    if (num < 0 || num > 1000)
-    {
-        std::cerr << "Error: not a positive number of [0, 1000] range." << inputFile << std::endl;
-        return BitcoinRate(date, 0); 
-    } 
 
     return bc;
 }
