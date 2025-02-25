@@ -24,6 +24,21 @@ struct TypePrinter<double>
     static const char* getType() { return "Double"; }
 };
 
+union ExchangeRate
+{
+    float   f;
+    int     i;
+};
+
+struct Bitcoin
+{
+    std::string date;
+    enum Type {INT, FLOAT } rateType;
+    ExchangeRate rate;
+};
+
+typedef std::pair<std::string, ExchangeRate> BitcoinRate;
+
 class BitcoinExchange
 {
 public:
@@ -51,9 +66,10 @@ private:
     }
 
     bool validateDate(const std::string& date);
+    Bitcoin BitcoinExchange::extractDateValue(const std::string& line);
 
 private:
-    std::map<std::string, double> data_;
+    std::map<std::string, ExchangeRate> data_;
 };
 
 #endif

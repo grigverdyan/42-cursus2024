@@ -62,6 +62,63 @@ bool BitcoinExchange::validateDate(const std::string& date)
     return day <= maxDays;
 }
 
+Bitcoin BitcoinExchange::extractDateValue(const std::string& line)
+{
+    std::istringstream iss(line);
+    std::string date;
+    std::string value;
+    std::getline(iss, date, ',');
+    std::getline(iss, value, ',');
+
+    // if (iss.fail())
+    // {
+    //     std::cerr << "Error: Invalid line in file " << inputFile << std::endl;
+    //     return BitcoinRate("", 0); 
+    // }
+
+    Bitcoin bc;
+
+
+    std::cout << date << " " << value << std::endl;
+    if (!validateDate(date))
+    {
+        std::cerr << "Error: Invalid date format in file " << inputFile << std::endl;
+        bc.date = "";
+    }
+    else
+    {
+        bc.date = date;
+
+    }
+
+    try 
+    {
+        if (value.find('.') != std::string::npos)
+        {
+            bc.rateType = Bitcoin::FLOAT;
+            bc.rate.f = convertString<float>(value);
+        }
+        else
+        {
+            bc.rateType = Bitcoin::INT;
+            bc.rate.i = convertString<int>(value);
+        }
+    }
+    catch (std::exception& e)
+    {
+        std::cerr << "Error: " << e.what();
+        return BitcoinRate(date, 0); 
+    }
+
+    if (num < 0 || num > 1000)
+    {
+        std::cerr << "Error: not a positive number of [0, 1000] range." << inputFile << std::endl;
+        return BitcoinRate(date, 0); 
+    } 
+
+    return bc;
+}
+
 
 void BitcoinExchange::loadData(const std::string& inputFile)
 {
@@ -83,33 +140,51 @@ void BitcoinExchange::loadData(const std::string& inputFile)
             continue;
         }
 
-        std::istringstream iss(line);
-        std::string date;
-        std::string value;
-        std::getline(iss, date, ',');
-        std::getline(iss, value, ',');
-        if (!validateDate(date))
+        // std::istringstream iss(line);
+        // std::string date;
+        // std::string value;
+        // std::getline(iss, date, ',');
+        // std::getline(iss, value, ',');
+
+        // std::cout << date << " " << value << std::endl;
+        // if (!validateDate(date))
+        // {
+        //     std::cerr << "Error: Invalid date format in file " << inputFile << std::endl;
+        //     continue;
+        // }
+
+        // if (iss.fail())
+        // {
+        //     std::cerr << "Error: Invalid line in file " << inputFile << std::endl;
+        //     continue;
+        // }
+
+        // try 
+        // {
+        //     ExchangeRate num;
+        //     if (value.find('.') != std::string::npos)
+        //     {
+        //         num.iValue = convertString<int>(value);
+        //         data_[date] = num;
+        //     }
+        //     else
+        //     {
+        //         num.fValue = convertString<double>(value);
+        //         data_[date] = num;
+        //     }
+        // }
+        // catch (std::exception& e)
+        // {
+        //     std::cerr << "Error: " << e.what();
+        // }
+        Bitcoin bc = extractDateValue(line);
+        if (bc.rateType == Bitcoin::INT)
         {
-            std::cerr << "Error: Invalid date format in file " << inputFile << std::endl;
-            continue;
+            data_[bc.date] = bc.rate.i;
         }
-
-        if (iss.fail())
+        else
         {
-            std::cerr << "Error: Invalid line in file " << inputFile << std::endl;
-            continue;
-        }
-
-
-
-        try 
-        {
-            float num = convertString<double>(value);
-            data_[date] = num;
-        }
-        catch (std::exception& e)
-        {
-            std::cerr << "Error: " << e.what();
+            data_[bc.date] = bc.rate.f;
         }
     }
 
@@ -117,7 +192,8 @@ void BitcoinExchange::loadData(const std::string& inputFile)
 
     // Iterate through the map using iterators
     std::map<std::string, double>::iterator it;
-    for (it = data_.begin(); it != data_.end(); ++it) {
+    for (it = data_.begin(); it != data_.end(); ++it) 
+    {
         std::cout << "Date: " << it->first << ", Value: " << it->second << std::endl;
     }
 }
