@@ -6,39 +6,16 @@
 #include <sstream>
 #include <iostream>
 
-// Type Specialization at compile-time
-template<typename T>
-struct TypePrinter
-{
-    static const char* getType() { return "Unknown"; }
-};
-
-template<>
-struct TypePrinter<int>
-{
-    static const char* getType() { return "Integer"; }
-};
-
-template<>
-struct TypePrinter<double>
-{
-    static const char* getType() { return "Double"; }
-};
-
-union ExchangeRate
-{
-    float   f;
-    int     i;
-};
-
 struct Bitcoin
 {
     std::string date;
-    enum Type {INT, FLOAT } rateType;
-    ExchangeRate rate;
-};
+    double      rate;
 
-typedef std::pair<std::string, ExchangeRate> BitcoinRate;
+    Bitcoin() : date(""), rate(-1) {}
+    ~Bitcoin() {}
+    Bitcoin(const Bitcoin&) {} 
+    Bitcoin& operator=(const Bitcoin&) { return *this; } 
+};
 
 class BitcoinExchange
 {
@@ -54,28 +31,12 @@ public:
 private:
     void loadData(const std::string& inputFile);
 
-    template<typename T>
-    T convertString(const std::string& str) const
-    {
-        std::istringstream iss(str);
-        T num;
-        if (!(iss >> num))
-        {
-            throw std::runtime_error("Invalid " + std::string(TypePrinter<T>::getType()) + " format in the input file!");
-        }
-        if (num < 0 || num > 1000)
-        {
-            std::cerr << "Error: not a positive number of [0, 1000] range." << std::endl;
-            num = 0;
-        }
-        return num;
-    }
-
+    double convertString(const std::string& str) const;
     bool validateDate(const std::string& date);
-    Bitcoin extractDateValue(const std::string& line);
+    Bitcoin extractDateValue(const std::string& line, char delimiter);
 
 private:
-    std::map<std::string, ExchangeRate> data_;
+    std::map<std::string, double> data_;
 };
 
 #endif

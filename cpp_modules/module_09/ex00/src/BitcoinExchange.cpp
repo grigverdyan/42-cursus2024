@@ -26,6 +26,23 @@ BitcoinExchange& BitcoinExchange::operator=(const BitcoinExchange& other)
 BitcoinExchange::~BitcoinExchange()
 {}
 
+double BitcoinExchange::convertString(const std::string& str) const
+{
+    std::istringstream iss(str);
+    double num;
+    if (!(iss >> num))
+    {
+        throw std::runtime_error("Invalid float format in the input file!");
+    }
+    if (num < 0 || num > 1000)
+    {
+        std::cerr << "Error: not a positive number of [0, 1000] range. Using Default: -1." << std::endl;
+        num = -1;
+    }
+
+    return num;
+}
+
 bool BitcoinExchange::validateDate(const std::string& date)
 {
     if (date.length() != 10 || date[4] != '-' || date[7] != '-') 
@@ -62,53 +79,42 @@ bool BitcoinExchange::validateDate(const std::string& date)
     return day <= maxDays;
 }
 
-Bitcoin BitcoinExchange::extractDateValue(const std::string& line)
+Bitcoin BitcoinExchange::extractDateValue(const std::string& line, char delimiter)
 {
     std::istringstream iss(line);
     std::string date;
     std::string value;
-    std::getline(iss, date, ',');
-    std::getline(iss, value, ',');
+    
+    std::getline(iss >> std::ws, date, delimiter);
+    iss >> value;
 
-    // if (iss.fail())
-    // {
-    //     std::cerr << "Error: Invalid line in file " << inputFile << std::endl;
-    //     return BitcoinRate("", 0); 
-    // }
+    if (iss.fail() || line.find(line.begin(), line.end(), "|") == line.end())
+    {
+        std::cerr << "Error: Invalid line in file " << inputFile << std::endl;
+        return NULL; 
+    }
 
     Bitcoin bc;
 
-
-    std::cout << date << " " << value << std::endl;
+    // std::cout << date << " " << value << std::endl;
     if (!validateDate(date))
     {
-        std::cerr << "Error: Invalid date format in file " << date << std::endl;
+        std::cerr << "Error: Invalid date: " << date << ". Will be replaced by \"\"." << std::endl;
         bc.date = "";
     }
     else
     {
         bc.date = date;
-
     }
 
     try 
     {
-        if (value.find('.') != std::string::npos)
-        {
-            bc.rateType = Bitcoin::FLOAT;
-            bc.rate.f = convertString<float>(value);
-        }
-        else
-        {
-            bc.rateType = Bitcoin::INT;
-            bc.rate.i = convertString<int>(value);
-        }
+        bc.rate = convertString(value);
     }
     catch (std::exception& e)
     {
         std::cerr << "Error: " << e.what();
-        bc.rateType = Bitcoin::INT;
-        bc.rate.i = 0;
+        bc.rate= -1;
         return bc; 
     }
 
@@ -135,66 +141,66 @@ void BitcoinExchange::loadData(const std::string& inputFile)
             firstLine = false;
             continue;
         }
-
-        // std::istringstream iss(line);
-        // std::string date;
-        // std::string value;
-        // std::getline(iss, date, ',');
-        // std::getline(iss, value, ',');
-
-        // std::cout << date << " " << value << std::endl;
-        // if (!validateDate(date))
-        // {
-        //     std::cerr << "Error: Invalid date format in file " << inputFile << std::endl;
-        //     continue;
-        // }
-
-        // if (iss.fail())
-        // {
-        //     std::cerr << "Error: Invalid line in file " << inputFile << std::endl;
-        //     continue;
-        // }
-
-        // try 
-        // {
-        //     ExchangeRate num;
-        //     if (value.find('.') != std::string::npos)
-        //     {
-        //         num.iValue = convertString<int>(value);
-        //         data_[date] = num;
-        //     }
-        //     else
-        //     {
-        //         num.fValue = convertString<double>(value);
-        //         data_[date] = num;
-        //     }
-        // }
-        // catch (std::exception& e)
-        // {
-        //     std::cerr << "Error: " << e.what();
-        // }
-        Bitcoin bc = extractDateValue(line);
-        if (bc.rateType == Bitcoin::INT)
-        {
-            data_[bc.date] = bc.rate.i;
-        }
-        else
-        {
-            data_[bc.date] = bc.rate.f;
-        }
+        Bitcoin bc = extractDateValue(line, ',');
+        data_[bc.date] = bc.rate;
     }
 
     file.close();
 
-    // Iterate through the map using iterators
-    std::map<std::string, double>::iterator it;
-    for (it = data_.begin(); it != data_.end(); ++it) 
-    {
-        std::cout << "Date: " << it->first << ", Value: " << it->second << std::endl;
-    }
+    // // Iterate through the map using iterators
+    // std::map<std::string, double>::iterator it;
+    // for (it = data_.begin(); it != data_.end(); ++it) 
+    // {
+    //     std::cout << "Date: " << it->first << " Value: " << it->second << std::endl;
+    // }
 }
 
 void BitcoinExchange::evaluateFile(const std::string& inputFile)
 {
-   (void)inputFile;
+    std::ifstream file(inputFile.c_str());
+    if (!file.is_open())
+    {
+        std::cerr << "Error: Cannot open input file " << inputFile << "." << std::endl;
+        return;
+    }
+
+    std::string line;
+    bool firstLine = true;
+
+    while (std::getline(file, line))
+    {
+        if (firstLine)
+        {
+            firstLine = false;
+            continue;
+        }
+        Bitcoin bc = extractDateValue(line, '|');
+
+        std::map<std::string, double>::iterator it = data_.lower_bound(bc.date);
+
+        // If the exact date is not found, use the previous date (if available)
+        if (it == data_.end() || it->first != bc.date) 
+        {
+            if (it != data_.begin()) 
+            {
+                --it;
+            } 
+            else 
+            {
+                std::cerr << "No exchange rate available for date: " << bc.date << std::endl;
+                continue;
+            }
+        }
+        double exchangeRate = it->second;
+        if (exchangeRate < 0)
+        {
+            std::cerr << "Error: too large a number." << std::endl;
+            continue;
+        }
+        double result = bc.rate * exchangeRate;
+
+        std::cout << bc.date << " => " << bc.rate << " = " << result << std::endl;
+    }
+
+    file.close();
 }
