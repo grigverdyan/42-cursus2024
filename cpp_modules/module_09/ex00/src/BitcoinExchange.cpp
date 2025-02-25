@@ -65,7 +65,7 @@ bool BitcoinExchange::validateDate(const std::string& date)
 
 void BitcoinExchange::loadData(const std::string& inputFile)
 {
-    std::ifstream file(inputFile);
+    std::ifstream file(inputFile.c_str());
     if (!file.is_open())
     {
         std::cerr << "Error: Cannot open database file " << inputFile << "." << std::endl;
@@ -73,13 +73,26 @@ void BitcoinExchange::loadData(const std::string& inputFile)
     }
 
     std::string line;
+    bool firstLine = true;
 
     while (std::getline(file, line))
     {
+        if (firstLine)
+        {
+            firstLine = false;
+            continue;
+        }
+
         std::istringstream iss(line);
         std::string date;
         std::string value;
-        iss >> date >> value;
+        std::getline(iss, date, ',');
+        std::getline(iss, value, ',');
+        if (!validateDate(date))
+        {
+            std::cerr << "Error: Invalid date format in file " << inputFile << std::endl;
+            continue;
+        }
 
         if (iss.fail())
         {
@@ -91,16 +104,8 @@ void BitcoinExchange::loadData(const std::string& inputFile)
 
         try 
         {
-            if (value.find('.') != std::string::npos)
-            {
-                int num = convertString<int>(value);
-                data_[date] = num;
-            }
-            else
-            {
-                float num = convertString<float>(value);
-                data_[date] = num;
-            }
+            float num = convertString<double>(value);
+            data_[date] = num;
         }
         catch (std::exception& e)
         {
@@ -111,7 +116,7 @@ void BitcoinExchange::loadData(const std::string& inputFile)
     file.close();
 
     // Iterate through the map using iterators
-    std::map<std::string, float>::iterator it;
+    std::map<std::string, double>::iterator it;
     for (it = data_.begin(); it != data_.end(); ++it) {
         std::cout << "Date: " << it->first << ", Value: " << it->second << std::endl;
     }

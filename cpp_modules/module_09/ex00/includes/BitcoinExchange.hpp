@@ -19,9 +19,9 @@ struct TypePrinter<int>
 };
 
 template<>
-struct TypePrinter<float>
+struct TypePrinter<double>
 {
-    static const char* getType() { return "Float"; }
+    static const char* getType() { return "Double"; }
 };
 
 class BitcoinExchange
@@ -53,7 +53,7 @@ private:
     bool validateDate(const std::string& date);
 
 private:
-    std::map<std::string, float> data_;
+    std::map<std::string, double> data_;
 };
 
 #endif
