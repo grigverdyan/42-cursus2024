@@ -5,7 +5,38 @@
 #include <iterator>
 #include <typeinfo>
 #include <iostream>
+#include <sstream>
 #include <ctime>
+
+template<typename T>
+T   next(T it, typename std::iterator_traits<T>::difference_type n = 1)
+{
+    std::advance(it, n);
+    return it;
+}
+
+template<typename T>
+T   prev(T it, typename std::iterator_traits<T>::difference_type n = -1)
+{
+    std::advance(it, n);
+    return it;
+}
+
+struct stringToInt
+{
+    int operator()(const std::string& str) const
+    {
+        std::stringstream ss(str);
+        int num;
+        if (!(ss >> num)) {
+            throw std::invalid_argument("Error: Invalid string to int conversion.");
+        }
+        return num;
+    }
+
+};
+
+
 
 namespace PmergeMe
 {
@@ -13,16 +44,9 @@ namespace PmergeMe
 template<typename ForwardIt, typename T>
 void insertIntoSortedRange(ForwardIt begin, ForwardIt end, const T& value)
 {
-    ForwardIt it = begin;
-    while (it != end && *it < value) 
-    {
-        ++it;
-    }
-    for (ForwardIt i = end; i != it; --i) 
-    {
-        ForwardIt prev = i;
-        --prev;
-        *i = *prev;
+    ForwardIt it = std::lower_bound(begin, end, value);
+    if (it != end) {
+        std::copy_backward(it, end, next(end));
     }
     *it = value;
 }
@@ -47,9 +71,10 @@ void mergeSortedRanges(ForwardIterator1 begin1, ForwardIterator1 end1, ForwardIt
     }
 }
 
-template <typename ForwardIt>
+template<typename ForwardIt>
 void    mergeInsertionSort(ForwardIt begin, ForwardIt end)
 {
+    typename std::iterator_traits<ForwardIt>::iterator_category type;
     size_t size = std::distance(begin, end);
     if (size <= 1) {
         return;
