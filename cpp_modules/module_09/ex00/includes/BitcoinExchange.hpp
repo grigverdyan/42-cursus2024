@@ -12,6 +12,7 @@ struct Bitcoin
     double      rate;
 
     Bitcoin() : date(""), rate(-1) {}
+    Bitcoin(const std::string& d, double r) : date(d), rate(r) {}
     ~Bitcoin() {}
     Bitcoin(const Bitcoin&) {} 
     Bitcoin& operator=(const Bitcoin&) { return *this; } 
@@ -31,9 +32,9 @@ public:
 private:
     void loadData(const std::string& inputFile);
 
-    double convertString(const std::string& str) const;
+    double convertString(const std::string& str, bool printException = false);
     bool validateDate(const std::string& date);
-    Bitcoin extractDateValue(const std::string& line, char delimiter);
+    Bitcoin extractDateValue(std::string& line, char delimiter, bool printException = false);
 
 private:
     std::map<std::string, double> data_;

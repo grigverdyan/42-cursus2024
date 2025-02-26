@@ -26,17 +26,28 @@ BitcoinExchange& BitcoinExchange::operator=(const BitcoinExchange& other)
 BitcoinExchange::~BitcoinExchange()
 {}
 
-double BitcoinExchange::convertString(const std::string& str) const
+double BitcoinExchange::convertString(const std::string& str, bool printException)
 {
     std::istringstream iss(str);
     double num;
-    if (!(iss >> num))
+
+    try
     {
-        throw std::runtime_error("Invalid float format in the input file!");
+        if (!(iss >> num)) {
+            throw std::runtime_error("Invalid float format in the input file");
+        }
+        if (num > 1000) {
+            throw std::runtime_error("too large a number.");
+        }
+        if (num < 0) {
+            throw std::runtime_error("not a positive number.");
+        }
     }
-    if (num < 0 || num > 1000)
+    catch(const std::exception& e)
     {
-        std::cerr << "Error: not a positive number of [0, 1000] range. Using Default: -1." << std::endl;
+        if (printException) {
+            std::cerr << "Error: " << e.what() << '\n';
+        }
         num = -1;
     }
 
@@ -45,8 +56,7 @@ double BitcoinExchange::convertString(const std::string& str) const
 
 bool BitcoinExchange::validateDate(const std::string& date)
 {
-    if (date.length() != 10 || date[4] != '-' || date[7] != '-') 
-    {
+    if (date.length() != 10 || date[4] != '-' || date[7] != '-') {
         return false;
     }
     
@@ -55,13 +65,11 @@ bool BitcoinExchange::validateDate(const std::string& date)
     std::istringstream ssMonth(date.substr(5, 2));
     std::istringstream ssDay(date.substr(8, 2));
 
-    if (!(ssYear >> year) || !(ssMonth >> month) || !(ssDay >> day)) 
-    {
+    if (!(ssYear >> year) || !(ssMonth >> month) || !(ssDay >> day)) {
         return false;
     }
 
-    if (year < 1 || month < 1 || month > 12 || day < 1) 
-    {
+    if (year < 1 || month < 1 || month > 12 || day < 1) {
         return false;
     }
 
@@ -71,54 +79,34 @@ bool BitcoinExchange::validateDate(const std::string& date)
 
     int maxDays = daysInMonth[month - 1];
     if (month == 2 && 
-            ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) )
-    {
+            ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) ) {
         maxDays = 29;
     }
 
     return day <= maxDays;
 }
 
-Bitcoin BitcoinExchange::extractDateValue(const std::string& line, char delimiter)
+Bitcoin BitcoinExchange::extractDateValue(std::string& line, char delimiter, bool printException)
 {
+    line.erase(std::remove(line.begin(), line.end(), ' '), line.end());
+
     std::istringstream iss(line);
     std::string date;
     std::string value;
     
-    std::getline(iss >> std::ws, date, delimiter);
-    iss >> value;
-
-    if (iss.fail() || line.find(line.begin(), line.end(), "|") == line.end())
+    if (std::getline(iss, date, delimiter) && std::getline(iss, value)) 
     {
-        std::cerr << "Error: Invalid line in file " << inputFile << std::endl;
-        return NULL; 
-    }
-
-    Bitcoin bc;
-
-    // std::cout << date << " " << value << std::endl;
-    if (!validateDate(date))
-    {
-        std::cerr << "Error: Invalid date: " << date << ". Will be replaced by \"\"." << std::endl;
-        bc.date = "";
-    }
-    else
-    {
-        bc.date = date;
-    }
-
-    try 
-    {
-        bc.rate = convertString(value);
-    }
-    catch (std::exception& e)
-    {
-        std::cerr << "Error: " << e.what();
-        bc.rate= -1;
-        return bc; 
-    }
-
-    return bc;
+        if (!validateDate(date))
+        {
+            if (printException) {
+                std::cerr << "Error: Invalid date format => " << date << std::endl;
+            }
+            return Bitcoin();
+        }
+        if (value.)
+        return Bitcoin(date, convertString(value, printException));
+    } 
+    return Bitcoin();
 }
 
 
@@ -139,6 +127,13 @@ void BitcoinExchange::loadData(const std::string& inputFile)
         if (firstLine)
         {
             firstLine = false;
+            continue;
+        }
+        if (line.find_first_not_of(' ') == std::string::npos 
+            || line.find(',') == std::string::npos
+            )
+        {
+            std::cerr << "Error: Invalid line format: " << line << " " << std::endl;
             continue;
         }
         Bitcoin bc = extractDateValue(line, ',');
@@ -167,6 +162,14 @@ void BitcoinExchange::evaluateFile(const std::string& inputFile)
     std::string line;
     bool firstLine = true;
 
+    // {        // Iterate through the map using iterators
+    //     std::map<std::string, double>::iterator it;
+    //     for (it = data_.begin(); it != data_.end(); ++it) 
+    //     {
+    //         std::cout << "Date: " << it->first << " Value: " << it->second << std::endl;
+    //     }
+    // }
+
     while (std::getline(file, line))
     {
         if (firstLine)
@@ -174,32 +177,61 @@ void BitcoinExchange::evaluateFile(const std::string& inputFile)
             firstLine = false;
             continue;
         }
-        Bitcoin bc = extractDateValue(line, '|');
 
-        std::map<std::string, double>::iterator it = data_.lower_bound(bc.date);
-
-        // If the exact date is not found, use the previous date (if available)
-        if (it == data_.end() || it->first != bc.date) 
+        if (line.find_first_not_of(' ') == std::string::npos 
+        || line.find('|') == std::string::npos)
         {
-            if (it != data_.begin()) 
-            {
-                --it;
-            } 
-            else 
-            {
-                std::cerr << "No exchange rate available for date: " << bc.date << std::endl;
-                continue;
+            std::cerr << "Error: bad input";
+            if (!line.empty()) {
+                std::cerr << " => " << line;
             }
-        }
-        double exchangeRate = it->second;
-        if (exchangeRate < 0)
-        {
-            std::cerr << "Error: too large a number." << std::endl;
+            std::cerr << std::endl;
             continue;
         }
-        double result = bc.rate * exchangeRate;
+        Bitcoin bc = extractDateValue(line, '|', true);
+        if (bc.rate < 0 || bc.date.empty())
+        {
+            continue;
+        }
 
-        std::cout << bc.date << " => " << bc.rate << " = " << result << std::endl;
+        // std::map<std::string, double>::iterator it = data_.find(bc.date);
+        // if (it != data_.end()) 
+        // {
+        //     std::cout << "Date: " << it->first << " Value: " << it->second << std::endl;
+        //     continue;
+        // }
+
+        // if (it == data_.end() || it->first != bc.date) 
+        // {
+        //     if (it != data_.begin()) {
+        //         --it;
+        //     } 
+        //     else 
+        //     {
+        //         std::cerr << "No exchange rate available for date: " << bc.date << std::endl;
+        //         continue;
+        //     }
+        // }
+
+        // std::cout << "Date: " << it->first << " Value: " << it->second << std::endl;
+        // double exchangeRate = it->second;
+        // // if (exchangeRate > 1000 || bc.rate > 1000)
+        // // {
+        // //     std::cerr << "Error: too large a number." << std::endl;
+        // //     continue;
+        // // }
+        // // if (bc.rate < 0 || )
+        // // {
+        // //     continue;
+        // // }
+        // if (exchangeRate < 0)
+        // {
+        //     std::cerr << "Error: Invalid exchange rate for date: " << bc.date << std::endl;
+        //     continue;
+        // }
+        // double result = bc.rate * exchangeRate;
+
+        // std::cout << bc.date << " => " << bc.rate << " = " << result << std::endl;
     }
 
     file.close();
