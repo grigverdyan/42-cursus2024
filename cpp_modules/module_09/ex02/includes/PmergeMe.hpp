@@ -58,7 +58,7 @@ void insertElements(Container& sortedMain, Container& pending, typename Containe
 
     iterator insertPosition;
 
-    // If only one element is pending, insert it directly in the correct position
+    // If only one element is pending, insert it directly into the correct position
     if (pending.size() == 1) 
     {
         insertPosition = std::upper_bound(sortedMain.begin(), sortedMain.end(), *pending.begin());

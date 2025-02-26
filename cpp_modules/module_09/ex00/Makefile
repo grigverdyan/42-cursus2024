@@ -12,7 +12,7 @@ WHITE    		= "\033[37m"    # White
 # Target and instructions
 TARGET			= btc
 CC				= c++
-CFLAGS			= -Wall -Wextra -Werror -std=c++98 -fsanitize=address
+CFLAGS			= -Wall -Wextra -Werror -std=c++98
 MKDIR			= mkdir -p
 RM				= rm -rf
 

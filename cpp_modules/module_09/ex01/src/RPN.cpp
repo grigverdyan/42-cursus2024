@@ -19,8 +19,7 @@ float RPN::calculate()
 
 void RPN::processInput() 
 {
-    if (input_.find_first_not_of("0123456789+-*/ ") != std::string::npos)
-    { 
+    if (input_.find_first_not_of("0123456789+-*/ ") != std::string::npos) { 
         throw std::runtime_error("Only numbers, operators and space are accepted in Polish Notation!");
     }
 
@@ -30,14 +29,12 @@ void RPN::processInput()
     for (std::string::iterator it = input_.begin(); it != input_.end(); ++it) 
     {
         char ch = *it;
-        if (std::isdigit(ch))
-        {
+        if (std::isdigit(ch)) {
             stack_.push(std::strtof(&ch, NULL));
         }
         else if (std::string("+-/*").find(ch) != std::string::npos) 
         {
-            if (stack_.size() < 2)
-            {
+            if (stack_.size() < 2) {
                 throw NotEnoughNumbers();
             }
             operand2 = stack_.top();
@@ -48,8 +45,7 @@ void RPN::processInput()
         }
     }
 
-    if (stack_.size() != 1)
-    {
+    if (stack_.size() != 1) {
         throw NotEnoughOperators();
     }
 }
