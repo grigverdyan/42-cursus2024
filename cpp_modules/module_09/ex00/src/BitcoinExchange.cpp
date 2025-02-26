@@ -1,6 +1,7 @@
 #include "BitcoinExchange.hpp"
 #include <fstream>
 #include <iostream>
+#include <algorithm>
 
 BitcoinExchange::BitcoinExchange()
 {}
@@ -103,7 +104,13 @@ Bitcoin BitcoinExchange::extractDateValue(std::string& line, char delimiter, boo
             }
             return Bitcoin();
         }
-        if (value.)
+        if (value.empty())
+        {
+            if (printException) {
+                std::cerr << "Error: Invalid value format => " << value << std::endl;
+            }
+            return Bitcoin();
+        }
         return Bitcoin(date, convertString(value, printException));
     } 
     return Bitcoin();
@@ -129,9 +136,7 @@ void BitcoinExchange::loadData(const std::string& inputFile)
             firstLine = false;
             continue;
         }
-        if (line.find_first_not_of(' ') == std::string::npos 
-            || line.find(',') == std::string::npos
-            )
+        if (line.find(',') == std::string::npos)
         {
             std::cerr << "Error: Invalid line format: " << line << " " << std::endl;
             continue;
@@ -141,13 +146,6 @@ void BitcoinExchange::loadData(const std::string& inputFile)
     }
 
     file.close();
-
-    // // Iterate through the map using iterators
-    // std::map<std::string, double>::iterator it;
-    // for (it = data_.begin(); it != data_.end(); ++it) 
-    // {
-    //     std::cout << "Date: " << it->first << " Value: " << it->second << std::endl;
-    // }
 }
 
 void BitcoinExchange::evaluateFile(const std::string& inputFile)
@@ -162,14 +160,6 @@ void BitcoinExchange::evaluateFile(const std::string& inputFile)
     std::string line;
     bool firstLine = true;
 
-    // {        // Iterate through the map using iterators
-    //     std::map<std::string, double>::iterator it;
-    //     for (it = data_.begin(); it != data_.end(); ++it) 
-    //     {
-    //         std::cout << "Date: " << it->first << " Value: " << it->second << std::endl;
-    //     }
-    // }
-
     while (std::getline(file, line))
     {
         if (firstLine)
@@ -178,8 +168,7 @@ void BitcoinExchange::evaluateFile(const std::string& inputFile)
             continue;
         }
 
-        if (line.find_first_not_of(' ') == std::string::npos 
-        || line.find('|') == std::string::npos)
+        if (line.find('|') == std::string::npos)
         {
             std::cerr << "Error: bad input";
             if (!line.empty()) {
@@ -194,44 +183,28 @@ void BitcoinExchange::evaluateFile(const std::string& inputFile)
             continue;
         }
 
-        // std::map<std::string, double>::iterator it = data_.find(bc.date);
-        // if (it != data_.end()) 
-        // {
-        //     std::cout << "Date: " << it->first << " Value: " << it->second << std::endl;
-        //     continue;
-        // }
+        std::map<std::string, double>::iterator it = data_.lower_bound(bc.date);
+        if (it == data_.end() || it->first != bc.date) 
+        {
+            if (it != data_.begin()) {
+                --it;
+            } 
+            else 
+            {
+                std::cerr << "No exchange rate available for date: " << bc.date << std::endl;
+                continue;
+            }
+        }
 
-        // if (it == data_.end() || it->first != bc.date) 
-        // {
-        //     if (it != data_.begin()) {
-        //         --it;
-        //     } 
-        //     else 
-        //     {
-        //         std::cerr << "No exchange rate available for date: " << bc.date << std::endl;
-        //         continue;
-        //     }
-        // }
+        double exchangeRate = it->second;
+        if (exchangeRate < 0)
+        {
+            std::cerr << "Error: Invalid exchange rate for date: " << bc.date << std::endl;
+            continue;
+        }
+        double result = bc.rate * exchangeRate;
 
-        // std::cout << "Date: " << it->first << " Value: " << it->second << std::endl;
-        // double exchangeRate = it->second;
-        // // if (exchangeRate > 1000 || bc.rate > 1000)
-        // // {
-        // //     std::cerr << "Error: too large a number." << std::endl;
-        // //     continue;
-        // // }
-        // // if (bc.rate < 0 || )
-        // // {
-        // //     continue;
-        // // }
-        // if (exchangeRate < 0)
-        // {
-        //     std::cerr << "Error: Invalid exchange rate for date: " << bc.date << std::endl;
-        //     continue;
-        // }
-        // double result = bc.rate * exchangeRate;
-
-        // std::cout << bc.date << " => " << bc.rate << " = " << result << std::endl;
+        std::cout << bc.date << " => " << bc.rate << " = " << result << std::endl;
     }
 
     file.close();

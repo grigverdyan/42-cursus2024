@@ -1,96 +1,112 @@
 #ifndef PMERGEME_HPP
 #define PMERGEME_HPP
 
-#include <vector>
-#include <deque>
+#include <algorithm>
 #include <iterator>
+#include <typeinfo>
 #include <iostream>
-#include <stdexcept>
+#include <ctime>
 
-void runSortingAlgorithm(int argc, char* argv[]);
-
-template <typename T>
-void merge(typename T::iterator left, typename T::iterator mid, typename T::iterator right)
+namespace PmergeMe
 {
-    typename T::iterator leftStart = left, rightStart = mid + 1;
-    std::vector<typename T::value_type> temp;
 
-    while (leftStart <= mid && rightStart <= right)
-	{
-        if (*leftStart <= *rightStart) 
-        {
-            temp.push_back(*leftStart);
-            ++leftStart;
-        } else 
-        {
-            temp.push_back(*rightStart);
-            ++rightStart;
+template<typename ForwardIt, typename T>
+void insertIntoSortedRange(ForwardIt begin, ForwardIt end, const T& value)
+{
+    ForwardIt it = begin;
+    while (it != end && *it < value) 
+    {
+        ++it;
+    }
+    for (ForwardIt i = end; i != it; --i) 
+    {
+        ForwardIt prev = i;
+        --prev;
+        *i = *prev;
+    }
+    *it = value;
+}
+
+template <typename ForwardIterator1, typename ForwardIterator2, typename OutputIterator>
+void mergeSortedRanges(ForwardIterator1 begin1, ForwardIterator1 end1, ForwardIterator2 begin2, ForwardIterator2 end2, OutputIterator out) {
+    while (begin1 != end1 && begin2 != end2) 
+    {
+        if (*begin1 < *begin2) {
+            *out++ = *begin1++;
+        } else {
+            *out++ = *begin2++;
+        }
+    }
+    while (begin1 != end1) 
+    {
+        *out++ = *begin1++;
+    }
+    while (begin2 != end2) 
+    {
+        *out++ = *begin2++;
+    }
+}
+
+template <typename ForwardIt>
+void    mergeInsertionSort(ForwardIt begin, ForwardIt end)
+{
+    size_t size = std::distance(begin, end);
+    if (size <= 1) {
+        return;
+    }
+
+    ForwardIt mid = begin;
+    std::advance(mid, size / 2);
+
+    for (ForwardIt it = begin; it != mid; ++it)
+    {
+        ForwardIt midIt = it;
+        std::advance(midIt, size / 2);
+        if (*it > *midIt) {
+            std::iter_swap(it, midIt);
         }
     }
 
-    while (leftStart <= mid) 
-    {
-        temp.push_back(*leftStart);
-        ++leftStart;
+    ForwardIt largerStart = begin;
+    std::advance(largerStart, size / 2);
+    mergeInsertionSort(largerStart, end);
+
+    ForwardIt sortedEnd = begin;
+    std::advance(sortedEnd, size / 2);
+    if (size % 2 != 0) {
+       ++sortedEnd;
     }
 
-    while (rightStart <= right) 
+    for (ForwardIt it = begin; it != mid; ++it)
     {
-        temp.push_back(*rightStart);
-        ++rightStart;
+        insertIntoSortedRange(begin, sortedEnd, *it);
     }
 
-    for (size_t i = 0; i < temp.size(); ++i) 
-    {
-        *left = temp[i];
-        ++left;
-    }
+    mergeSortedRanges(begin, sortedEnd, largerStart, end, begin);
 }
 
-template <typename T>
-void mergeSort(T& container, typename T::iterator left, typename T::iterator right)
+} // namespace PmergeMe
+
+template <typename Container>
+void printSequence(const std::string& message, const Container& container) 
 {
-    if (left < right) 
+    std::cout << message;
+    for (typename Container::const_iterator it = container.begin(); it != container.end(); ++it) 
     {
-        typename T::iterator mid = left + (right - left) / 2;
-        mergeSort(container, left, mid);
-        mergeSort(container, mid + 1, right);
-        merge<T>(left, mid, right);
+        std::cout << *it << " ";
     }
+    std::cout << std::endl;
 }
 
-template <typename T>
-void insertionSort(T& container)
+template <typename ForwardIt>
+void benchmarkMergeInsertionSort(ForwardIt begin, ForwardIt end, const std::string& contName)
 {
-    typename T::iterator it = container.begin();
+    std::clock_t startClock = std::clock();
+    PmergeMe::mergeInsertionSort(begin, end);
+    std::clock_t endClock = std::clock();
 
-    ++it;
-    for (; it != container.end(); ++it)
-	{
-        typename T::value_type key = *it;
-        typename T::iterator j = it;
-
-        while (j != container.begin() && *(j - 1) > key)
-		{
-            *j = *(j - 1);
-            --j;
-        }
-        *j = key;
-    }
-}
-
-template <typename T>
-void mergeInsertionSort(T& container)
-{
-    size_t size = container.size();
-
-    if (size <= 10) 
-    {
-        insertionSort(container);
-    } else 
-    {
-        mergeSort(container, container.begin(), container.end() - 1);
-    }
+    double duration = 1000.0 * (endClock - startClock) / CLOCKS_PER_SEC;
+    std::cout << "Time to process a range of " << std::distance(begin, end) << " elements with " << contName << " : " << duration << " ms" << std::endl;
 }
 
 #endif // PMERGEME_HPP
