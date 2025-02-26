@@ -45,16 +45,18 @@ struct stringToInt
     }
 };
 
-/* Merge-Insertion Sort */
+/* Namespace for Merge-Insertion Sort */
 namespace PmergeMe
 {
 
-// 📌 Insert elements from 'pending' into 'sortedMain' using Jacobsthal sequence
+/* Rebuild the sorted container with the correct order using Jacobsthal sequence for optimized merging order */
 template <typename Container>
 void insertElements(Container& sortedMain, Container& pending, typename Container::value_type leftoverElement, 
                     Container& remainingElements, Container& originalContainer, bool hasLeftover, int order) 
 {
-    typename Container::iterator insertPosition;
+    typedef typename Container::iterator iterator;
+
+    iterator insertPosition;
 
     // If only one element is pending, insert it directly in the correct position
     if (pending.size() == 1) 
@@ -64,18 +66,22 @@ void insertElements(Container& sortedMain, Container& pending, typename Containe
     } 
     else if (!pending.empty()) 
     {   // If there are multiple elements, insert them using Jacobsthal ordering
+
         size_t jacobIndex = 3;  // Start with Jacobsthal(3)
         size_t insertedCount = 0;
         size_t elementsToInsert;
         size_t shift;
 
-        while (!pending.empty()) {
+        while (!pending.empty()) 
+        {
             elementsToInsert = Jacobsthal(jacobIndex) - Jacobsthal(jacobIndex - 1);
-            if (elementsToInsert > pending.size())
+            if (elementsToInsert > pending.size()) {
                 elementsToInsert = pending.size();
+            }
             shift = 0;
 
-            while (elementsToInsert) {
+            while (elementsToInsert) 
+            {
                 insertPosition = sortedMain.begin();
 
                 if (Jacobsthal(jacobIndex + insertedCount) - shift <= sortedMain.size()) {
@@ -96,19 +102,24 @@ void insertElements(Container& sortedMain, Container& pending, typename Containe
         }
     }
 
-    // 📌 Rebuild sorted container with the correct order
+    // Rebuild sorted container with the correct order
     Container updatedSortedContainer;
 
     // If an extra (odd) element exists, insert it in the correct position
-    if (hasLeftover) {
+    if (hasLeftover) 
+    {
         insertPosition = std::upper_bound(sortedMain.begin(), sortedMain.end(), leftoverElement);
         sortedMain.insert(insertPosition, leftoverElement);
     }
 
-    // 📌 Reconstruct the sorted sequence in the correct order
-    for (typename Container::iterator it = sortedMain.begin(); it != sortedMain.end(); ++it) {
-        typename Container::iterator foundPos = std::find(originalContainer.begin(), originalContainer.end(), *it);
-        typename Container::iterator insertStart = foundPos;
+    // Reconstruct the sorted sequence in the correct order
+    for (iterator it = sortedMain.begin(); it != sortedMain.end(); ++it) 
+    {
+        iterator foundPos = std::find(originalContainer.begin(), originalContainer.end(), *it);
+        if (foundPos == originalContainer.end()) {
+            continue;
+        }
+        iterator insertStart = foundPos;
         std::advance(insertStart, -(order - 1));
         updatedSortedContainer.insert(updatedSortedContainer.end(), insertStart, ::next(foundPos));
     }
@@ -117,60 +128,83 @@ void insertElements(Container& sortedMain, Container& pending, typename Containe
     originalContainer = updatedSortedContainer;
 }
 
-// 📌 Recursive function for Merge-Insertion Sort
+/* Recursive function for Merge-Insertion Sort */
 template <typename Container>
-void sort(Container &container) {
+void sort(Container &container) 
+{
+    typedef typename Container::value_type value_type;
+    typedef typename Container::iterator iterator;
+
     static int order = 1;  // Initial order value
 
     int groupSize = container.size() / order;
-    if (groupSize < 2)
+    if (groupSize < 2) {
         return;
+    }
 
     bool hasLeftover = groupSize % 2 == 1;
     typename Container::iterator segmentStart = container.begin();
     typename Container::iterator segmentEnd = segmentStart;
     std::advance(segmentEnd, (order * groupSize) - (hasLeftover * order));
 
-    // 📌 Pairwise comparisons and swaps
-    for (typename Container::iterator it = segmentStart; it != segmentEnd; std::advance(it, order * 2)) {
-        if (*::next(it, order - 1) > *::next(it, order * 2 - 1)) {
-            for (int i = 0; i < order; i++) {
+    // Swap elements in pairs if they are in the wrong order
+    for (iterator it = segmentStart; it != segmentEnd; std::advance(it, order * 2)) 
+    {
+        if (*::next(it, order - 1) > *::next(it, order * 2 - 1)) 
+        {
+            for (int i = 0; i < order; i++) 
+            {
                 std::iter_swap(::next(it, i), ::next(it, i + order));
             }
         }
     }
 
-    // 📌 Recursive sorting of sub-groups
+    // Double the order and sort the container sub-groups
     order *= 2;
     sort(container);
     order /= 2;
 
-    // 📌 Separate main and pending elements
+    // Separate main and pending elements
     Container sortedMain;
     Container pendingElements;
-    typename Container::value_type leftoverElement = 0;
+    value_type leftoverElement = 0;
     Container remainingElements;
 
     // Extract first sorted pairs
     sortedMain.push_back(*::next(segmentStart, order - 1));
     sortedMain.push_back(*::next(segmentStart, order * 2 - 1));
 
-    for (typename Container::iterator it = ::next(segmentStart, order * 2); it != segmentEnd; std::advance(it, order)) {
+    for (iterator it = ::next(segmentStart, order * 2); it != segmentEnd; std::advance(it, order)) 
+    {
         pendingElements.push_back(*::next(it, order - 1));
         std::advance(it, order);
         sortedMain.push_back(*::next(it, order - 1));
     }
 
-    if (hasLeftover)
+    if (hasLeftover) {
         leftoverElement = *::next(segmentEnd, order - 1);
-
+    }
     remainingElements.insert(remainingElements.end(), ::next(segmentEnd, order * hasLeftover), container.end());
 
-    // 📌 Insert pending elements and leftover elements back in sorted order
+    // Insert pending elements and leftover elements back in sorted order
     if (hasLeftover || !pendingElements.empty()) {
         insertElements(sortedMain, pendingElements, leftoverElement, remainingElements, container, hasLeftover, order);
     }
+}
 
+} // namespace PmergeMe
+
+
+/* Print Container Sequence */
+template <typename Container>
+void printSequence(const std::string& message, const Container& container) 
+{
+    std::cout << message;
+    for (typename Container::const_iterator it = container.begin(); it != container.end(); ++it) 
+    {
+        std::cout << *it << " ";
+    }
+    std::cout << std::endl;
 }
 
 /* Determine container type */
@@ -189,27 +223,6 @@ std::string getContainerType()
     return "Unknown container";
 }
 
-
-
-
-
-
-} // namespace PmergeMe
-
-
-
-/* Print Container Sequence */
-template <typename Container>
-void printSequence(const std::string& message, const Container& container) 
-{
-    std::cout << message;
-    for (typename Container::const_iterator it = container.begin(); it != container.end(); ++it) 
-    {
-        std::cout << *it << " ";
-    }
-    std::cout << std::endl;
-}
-
 /* Benchmark Merge-Insertion Sort */
 template <typename Container>
 void benchmarkMergeInsertionSort(Container& container, bool printInfo = true)
@@ -222,7 +235,7 @@ void benchmarkMergeInsertionSort(Container& container, bool printInfo = true)
     {
         double duration = 1000.0 * (endClock - startClock) / CLOCKS_PER_SEC;
         std::cout << "Time to process a range of " << container.size() << " elements with " 
-                  << PmergeMe::getContainerType<Container>() << " : " << duration << " ms" 
+                  << getContainerType<Container>() << " : " << duration << " ms" 
                   << std::endl;
     }
 }
