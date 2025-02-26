@@ -1,8 +1,14 @@
 #include "PmergeMe.hpp"
 #include <iostream>
 #include <stdexcept>
+#include <limits>
 #include <vector>
 
+
+int Jacobsthal(int index) 
+{
+	return static_cast<int>(round((pow(2, index + 1) + pow(-1, index)) / 3));
+}
 
 std::vector<int> getArguments(int argc, char* argv[])
 {

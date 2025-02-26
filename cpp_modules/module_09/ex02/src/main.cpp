@@ -14,19 +14,25 @@ int main(int argc, char* argv[])
         if (argc <= 2) {
             throw std::invalid_argument("Usage: ./PmergeMe \"Range of positive integers\"");
         }
-        std::vector<int> inputVec = getArguments(argc, argv);
+        std::vector<int> input = getArguments(argc, argv);
 
+        std::vector<int> inputVec;
+        std::copy(input.begin(), input.end(), std::back_inserter(inputVec));
         std::deque<int> inputDeque(inputVec.begin(), inputVec.end());
         std::list<int> inputList(inputVec.begin(), inputVec.end());
 
-        printSequence("Before :", inputVec);
-        benchmarkMergeInsertionSort(inputVec.begin(), inputVec.end(), "std::vector");
-        printSequence("After  :", inputVec);
-
-        benchmarkMergeInsertionSort(inputDeque.begin(), inputDeque.end(), "std::deque");
+        printSequence("Before : ", inputVec);
+        benchmarkMergeInsertionSort(input, false);
+        printSequence("After  : ", input);
         
-        benchmarkMergeInsertionSort(inputList.begin(), inputList.end(), "std::list");
+        benchmarkMergeInsertionSort(inputVec);
+        printSequence("Sorted using vector  : ", inputVec);
 
+        benchmarkMergeInsertionSort(inputDeque);
+        printSequence("Sorted using Deque  : ", inputDeque);
+        
+        benchmarkMergeInsertionSort(inputList);
+        printSequence("Sorted using List  : ", inputList);
 
     } catch (const std::exception& e) 
     {
