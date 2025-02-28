@@ -11,7 +11,7 @@ int main(int argc, char* argv[])
 {
     try 
     {
-        if (argc <= 2) {
+        if (argc < 2) {
             throw std::invalid_argument("Usage: ./PmergeMe \"Range of positive integers\"");
         }
         std::vector<int> input = getArguments(argc, argv);

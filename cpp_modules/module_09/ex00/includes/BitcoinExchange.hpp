@@ -32,9 +32,9 @@ public:
 private:
     void loadData(const std::string& inputFile);
 
-    double convertString(const std::string& str, bool printException = false);
+    double convertString(const std::string& str, bool validateInput = false);
     bool validateDate(const std::string& date);
-    Bitcoin extractDateValue(std::string& line, char delimiter, bool printException = false);
+    Bitcoin extractDateValue(std::string& line, char delimiter, bool validateInput = false);
 
 private:
     std::map<std::string, double> data_;

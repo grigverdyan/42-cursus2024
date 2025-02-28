@@ -27,7 +27,7 @@ BitcoinExchange& BitcoinExchange::operator=(const BitcoinExchange& other)
 BitcoinExchange::~BitcoinExchange()
 {}
 
-double BitcoinExchange::convertString(const std::string& str, bool printException)
+double BitcoinExchange::convertString(const std::string& str, bool validateInput)
 {
     std::istringstream iss(str);
     double num;
@@ -37,7 +37,7 @@ double BitcoinExchange::convertString(const std::string& str, bool printExceptio
         if (!(iss >> num)) {
             throw std::runtime_error("Invalid float format in the input file");
         }
-        if (num > 1000) {
+        if (validateInput && num > 1000) {
             throw std::runtime_error("too large a number.");
         }
         if (num < 0) {
@@ -46,7 +46,7 @@ double BitcoinExchange::convertString(const std::string& str, bool printExceptio
     }
     catch(const std::exception& e)
     {
-        if (printException) {
+        if (validateInput) {
             std::cerr << "Error: " << e.what() << '\n';
         }
         num = -1;
@@ -87,10 +87,8 @@ bool BitcoinExchange::validateDate(const std::string& date)
     return day <= maxDays;
 }
 
-Bitcoin BitcoinExchange::extractDateValue(std::string& line, char delimiter, bool printException)
+Bitcoin BitcoinExchange::extractDateValue(std::string& line, char delimiter, bool validateInput)
 {
-    line.erase(std::remove(line.begin(), line.end(), ' '), line.end());
-
     std::istringstream iss(line);
     std::string date;
     std::string value;
@@ -99,19 +97,19 @@ Bitcoin BitcoinExchange::extractDateValue(std::string& line, char delimiter, boo
     {
         if (!validateDate(date))
         {
-            if (printException) {
+            if (validateInput) {
                 std::cerr << "Error: Invalid date format => " << date << std::endl;
             }
             return Bitcoin();
         }
         if (value.empty())
         {
-            if (printException) {
+            if (validateInput) {
                 std::cerr << "Error: Invalid value format => " << value << std::endl;
             }
             return Bitcoin();
         }
-        return Bitcoin(date, convertString(value, printException));
+        return Bitcoin(date, convertString(value, validateInput));
     } 
     return Bitcoin();
 }
@@ -127,16 +125,23 @@ void BitcoinExchange::loadData(const std::string& inputFile)
     }
 
     std::string line;
-    bool firstLine = true;
+    bool formatLine = false;
+    std::string format = "date,exchange_rate";
 
     while (std::getline(file, line))
     {
-        if (firstLine)
+        line.erase(std::remove(line.begin(), line.end(), ' '), line.end());
+        if (!formatLine && !line.empty() && line.find(format) != std::string::npos && line.length() == format.length())
         {
-            firstLine = false;
+            formatLine = true;
             continue;
         }
-        if (line.find(',') == std::string::npos)
+
+        if (!formatLine) {
+            continue;
+        }
+
+        if (!line.empty() && line.find(',') == std::string::npos)
         {
             std::cerr << "Error: Invalid line format: " << line << " " << std::endl;
             continue;
@@ -144,8 +149,12 @@ void BitcoinExchange::loadData(const std::string& inputFile)
         Bitcoin bc = extractDateValue(line, ',');
         data_[bc.date] = bc.rate;
     }
-
+    
     file.close();
+
+    if (!formatLine) {
+        throw std::runtime_error("Invalid Database file: No DB Format provided \"" + format + "\"");
+    }
 }
 
 void BitcoinExchange::evaluateFile(const std::string& inputFile)
@@ -158,13 +167,18 @@ void BitcoinExchange::evaluateFile(const std::string& inputFile)
     }
 
     std::string line;
-    bool firstLine = true;
+    bool formatLine = false;
+    std::string format = "date|value";
 
     while (std::getline(file, line))
     {
-        if (firstLine)
+        line.erase(std::remove(line.begin(), line.end(), ' '), line.end());
+        if (!formatLine && !line.empty() && line.find("date|value") != std::string::npos && line.length() == format.length())
         {
-            firstLine = false;
+            formatLine = true;
+            continue;
+        }
+        if (!formatLine) {
             continue;
         }
 
@@ -178,8 +192,7 @@ void BitcoinExchange::evaluateFile(const std::string& inputFile)
             continue;
         }
         Bitcoin bc = extractDateValue(line, '|', true);
-        if (bc.rate < 0 || bc.date.empty())
-        {
+        if (bc.rate < 0 || bc.date.empty()) {
             continue;
         }
 
@@ -206,6 +219,10 @@ void BitcoinExchange::evaluateFile(const std::string& inputFile)
 
         std::cout << bc.date << " => " << bc.rate << " = " << result << std::endl;
     }
-
+    
     file.close();
+
+    if (!formatLine) {
+         throw std::runtime_error("Invalid Input file: No Inpuy file Format provided \"" + format + "\"");
+    }
 }
