@@ -182,13 +182,9 @@ void BitcoinExchange::evaluateFile(const std::string& inputFile)
             continue;
         }
 
-        if (line.find('|') == std::string::npos)
+        if (!line.empty() && line.find('|') == std::string::npos)
         {
-            std::cerr << "Error: bad input";
-            if (!line.empty()) {
-                std::cerr << " => " << line;
-            }
-            std::cerr << std::endl;
+            std::cerr << "Error: bad input => " << line << std::endl;
             continue;
         }
         Bitcoin bc = extractDateValue(line, '|', true);
