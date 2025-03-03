@@ -21,22 +21,22 @@ int main(int argc, char* argv[])
         std::deque<int> inputDeque(inputVec.begin(), inputVec.end());
         std::list<int> inputList(inputVec.begin(), inputVec.end());
 
-        printSequence("Before : ", inputVec);
+        printSequence("\n**Before : ", inputVec);
         benchmarkMergeInsertionSort(input, false);
-        printSequence("After  : ", input);
+        printSequence("\n***After : ", input);
         
         benchmarkMergeInsertionSort(inputVec);
-        printSequence("Sorted using vector  : ", inputVec);
+        printSequence("\nSorted using vector : ", inputVec);
 
         benchmarkMergeInsertionSort(inputDeque);
-        printSequence("Sorted using Deque  : ", inputDeque);
+        printSequence("\nSorted using Deque : ", inputDeque);
         
         benchmarkMergeInsertionSort(inputList);
-        printSequence("Sorted using List  : ", inputList);
+        printSequence("\nSorted using List : ", inputList);
 
     } catch (const std::exception& e) 
     {
-        std::cerr << "An error occurred: " << e.what() << std::endl;
+        std::cerr << RED << "Error: " << e.what() << RESET << std::endl;
         return 1;
     }
 

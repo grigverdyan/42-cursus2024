@@ -29,6 +29,9 @@ std::vector<int> getArguments(int argc, char* argv[])
 		{
 			throw std::invalid_argument("Error: not an integer is provided.");
 		}
+		if (num.empty()) {
+			continue;
+		}
 		long number = stringToInt()(num);
 		if (number > std::numeric_limits<int>::max()) {
 			throw std::invalid_argument("Error: too large integer is provided.");
@@ -36,6 +39,9 @@ std::vector<int> getArguments(int argc, char* argv[])
 		if (number <= 0)
 		{
 			throw std::invalid_argument("Error: not positive integer is provided.");
+		}
+		if (std::find(range.begin(), range.end(), number) != range.end()) {
+			throw std::invalid_argument("Error: duplicate integer is provided.");
 		}
 		range.push_back(number);
 	}

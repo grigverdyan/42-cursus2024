@@ -12,6 +12,11 @@
 #include <vector>
 #include <cmath>
 
+#define RESET    "\033[0m"
+#define RED      "\033[31m"
+#define GREEN    "\033[32m"
+#define BLUE     "\033[34m"
+
 /* Compute Jacobsthal numbers for optimized merging order */
 int Jacobsthal(int index);
 
@@ -25,9 +30,9 @@ T next(T it, typename std::iterator_traits<T>::difference_type n = 1)
 
 /* Implement std::next equivalent for std::list as list does not have operator- */
 template<typename T>
-T prev(T it, typename std::iterator_traits<T>::difference_type n = -1)
+T prev(T it, typename std::iterator_traits<T>::difference_type n = 1)
 {
-    std::advance(it, n);
+    std::advance(it, -n);
     return it;
 }
 
@@ -64,7 +69,7 @@ void insertElements(Container& sortedMain, Container& pending, typename Containe
         insertPosition = std::upper_bound(sortedMain.begin(), sortedMain.end(), *pending.begin());
         sortedMain.insert(insertPosition, *pending.begin());
     } 
-    else if (!pending.empty()) 
+    else if (pending.size() > 1) 
     {   // If there are multiple elements, insert them using Jacobsthal ordering
 
         size_t jacobIndex = 3;  // Start with Jacobsthal(3)
@@ -119,9 +124,30 @@ void insertElements(Container& sortedMain, Container& pending, typename Containe
         if (foundPos == originalContainer.end()) {
             continue;
         }
+        //updatedSortedContainer.insert(updatedSortedContainer.end(), ::prev(foundPos, order - 1), ::next(foundPos, 1));
+        
+        // iterator insertStart = foundPos;
+        // std::advance(insertStart, -(order - 1));
+        // updatedSortedContainer.insert(updatedSortedContainer.end(), insertStart, ::next(foundPos));
+        
         iterator insertStart = foundPos;
-        std::advance(insertStart, -(order - 1));
-        updatedSortedContainer.insert(updatedSortedContainer.end(), insertStart, ::next(foundPos));
+        if (std::distance(originalContainer.begin(), foundPos) >= order - 1) {
+            std::advance(insertStart, -(order - 1));
+        } else {
+            insertStart = originalContainer.begin(); // Prevent invalid backward traversal
+        }
+        iterator insertEnd = foundPos;
+        std::advance(insertEnd, 1); // Move one step forward (safe way to create a range)
+    
+        // Ensure insertEnd is never beyond `originalContainer.end()`
+        if (insertEnd == originalContainer.end()) {
+            insertEnd = originalContainer.end();
+        }
+    
+        // Validate range before inserting
+        if (insertStart != insertEnd) {
+           updatedSortedContainer.insert(updatedSortedContainer.end(), insertStart, insertEnd);
+        }
     }
 
     updatedSortedContainer.insert(updatedSortedContainer.end(), remainingElements.begin(), remainingElements.end());
@@ -152,7 +178,7 @@ void sort(Container &container)
     {
         if (*::next(it, order - 1) > *::next(it, order * 2 - 1)) 
         {
-            for (int i = 0; i < order; i++) 
+            for (int i = 0; i < order; ++i) 
             {
                 std::iter_swap(::next(it, i), ::next(it, i + order));
             }
@@ -234,9 +260,9 @@ void benchmarkMergeInsertionSort(Container& container, bool printInfo = true)
     if (printInfo)
     {
         double duration = 1000.0 * (endClock - startClock) / CLOCKS_PER_SEC;
-        std::cout << "Time to process a range of " << container.size() << " elements with " 
-                  << getContainerType<Container>() << " : " << duration << " ms" 
-                  << std::endl;
+        std::cout << BLUE << "Time to process a range of " << container.size() << " elements with " 
+                  << getContainerType<Container>() << " : " <<GREEN << duration << " ms" 
+                  << RESET << std::endl;
     }
 }
 
